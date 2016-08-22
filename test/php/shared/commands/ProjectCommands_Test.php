@@ -63,6 +63,23 @@ class TestProjectCommands extends UnitTestCase
         $this->assertTrue($project->isArchived);
     }
 
+    public function testArchiveProjects_DateTimestampAppended()
+    {
+        $this->environ->clean();
+
+        $project = $this->environ->createProject(SF_TESTPROJECT, SF_TESTPROJECTCODE);
+        $projectId = $project->id->asString();
+        $ownerId = $project->ownerRef->asString();
+
+        ProjectCommands::archiveProject($projectId, $ownerId);
+
+        $project->read($projectId);
+        preg_match(ProjectCommands::projectCodeRegexPattern(), $project->projectCode, $matches);
+        $this->assertEqual(count($matches), 1);
+        preg_match(ProjectCommands::projectNameRegexPattern(), $project->projectName, $matches);
+        $this->assertEqual(count($matches), 1);
+    }
+
     public function testCheckIfArchivedAndThrow_NonArchivedProject_NoThrow()
     {
         $this->environ->clean();
@@ -319,6 +336,26 @@ class TestProjectCommands extends UnitTestCase
         $project->write();
 
         $this->assertFalse(ProjectCommands::projectCodeExists('randomcode'));
+    }
+
+    public function testProjectNameExists_nameExists_true()
+    {
+        $this->environ->clean();
+
+        $project = $this->environ->createProject(SF_TESTPROJECT, SF_TESTPROJECTCODE);
+        $project->write();
+
+        $this->assertTrue(ProjectCommands::projectNameExists(SF_TESTPROJECT));
+    }
+
+    public function testProjectNameExists_nameDoesNotExist_false()
+    {
+        $this->environ->clean();
+
+        $project = $this->environ->createProject(SF_TESTPROJECT, SF_TESTPROJECTCODE);
+        $project->write();
+
+        $this->assertFalse(ProjectCommands::projectNameExists('randomName'));
     }
 
     public function testCreateProject_newProject_projectOwnerSet()

@@ -117,6 +117,18 @@ class ProjectModel extends Mapper\MapperModel
     }
 
     /**
+     * Rename the project code.  Also renames the Mongo collection
+     * @param string $newProjectCode
+     */
+    public function renameProjectCode($newProjectCode)
+    {
+        CodeGuard::checkTypeAndThrow($newProjectCode, 'string');
+
+        $this->projectCode = $newProjectCode;
+
+    }
+
+    /**
      * Adds the $userId as a member of this project.
      * @param string $userId
      * @param string $role The system role the user has.

@@ -32,9 +32,6 @@ class SessionCommands
             $sessionData['project'] = array();
             $sessionData['project']['id'] = (string) $projectId;
             $sessionData['project']['projectName'] = $project->projectName;
-            if ($project->isArchived) {
-                $sessionData['project']['projectName'] .= " [ARCHIVED]";
-            }
             $sessionData['project']['appName'] = $project->appName;
             $sessionData['project']['appLink'] = "/app/{$project->appName}/$projectId/";
             $sessionData['project']['ownerRef'] = $project->ownerRef->asString();

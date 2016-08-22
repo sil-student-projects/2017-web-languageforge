@@ -17,6 +17,7 @@ use Api\Model\ProjectSettingsModel;
 use Api\Model\Shared\Rights\SystemRoles;
 use Api\Model\Sms\SmsSettings;
 use Api\Model\UserModel;
+use MongoDB\BSON\UTCDateTime;
 use Palaso\Utilities\CodeGuard;
 
 class ProjectCommands
@@ -113,7 +114,32 @@ class ProjectCommands
         $user->write();
 
         $project->isArchived = true;
+
+        // Append UTC timestamp to projectCode and projectName
+        //$newProjectCode = $project->projectCode;
+        do {
+            $archiveDate = gmdate('Ymd\THis\Z', time());
+            $newProjectCode = $project->projectCode . "_" . $archiveDate;
+        }
+        while (ProjectCommands::projectCodeExists($newProjectCode));
+        $project->renameProjectCode($newProjectCode);
+        $project->projectName .= " [ARCHIVED $archiveDate]";
         return $project->write();
+    }
+
+    public static function projectCodeRegexPattern()
+    {
+        return '/_\d{8}T\d{6}Z$/';
+    }
+
+    public static function projectNameRegexPattern()
+    {
+        return '/ \[ARCHIVED \d{8}T\d{6}Z\]$/';
+    }
+
+    private static function setUniqueProjectCode($projectCode)
+    {
+
     }
 
     /**
@@ -128,6 +154,31 @@ class ProjectCommands
             CodeGuard::checkTypeAndThrow($projectId, 'string');
             $project = new ProjectModel($projectId);
             $project->isArchived = false;
+
+            // If projectCode sans UTC timestamp doesn't exist, remove timestamp from the projectCode.
+            // Otherwise, leave the projectCode intact.
+            $newProjectCode = preg_replace(ProjectCommands::projectCodeRegexPattern(), '', $project->projectCode, 1, $modifyCount);
+            if (($modifyCount == 1) && !ProjectCommands::ProjectCodeExists($newProjectCode)) {
+                $project->projectCode = $newProjectCode;
+            }
+            // Similar for UTC timestamp and projectName
+            $archiveDateTime = 0;
+            preg_match(ProjectCommands::projectNameRegexPattern(), $project->projectName, $matches);
+            if (count($matches) > 0) {
+                $archiveDateTime = preg_replace('/ \[ARCHIVED /', '', $matches[0], 1, $modifyCount);
+                $archiveDateTime = preg_replace('/\]$/', '', $archiveDateTime, 1, $modifyCount);
+            }
+            $newProjectName = preg_replace(ProjectCommands::projectNameRegexPattern(), '', $project->projectName, 1, $modifyCount);
+            if ($modifyCount == 1) {
+                if (!ProjectCommands::ProjectNameExists($newProjectName)) {
+                    $project->projectName = $newProjectName;
+                }
+                // If the projectName already exists, keep the archive timestamp on the new project name
+                else {
+                    $project->projectName = $newProjectName . " [$archiveDateTime]";
+                }
+            }
+
             $project->write();
             $count++;
         }
@@ -321,6 +372,17 @@ class ProjectCommands
         $project = new ProjectModel();
 
         return $project->readByProperties(array('projectCode' => $code));
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public static function projectNameExists($name)
+    {
+        $project = new ProjectModel();
+
+        return $project->readByProperties(array('projectName' => $name));
     }
 
 }
