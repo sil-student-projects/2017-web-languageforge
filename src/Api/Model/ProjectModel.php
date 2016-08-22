@@ -117,15 +117,23 @@ class ProjectModel extends Mapper\MapperModel
     }
 
     /**
-     * Rename the project code.  Also renames the Mongo collection
+     * Rename the project code and Mongo database name
      * @param string $newProjectCode
+     * @throws \Exception
      */
     public function renameProjectCode($newProjectCode)
     {
         CodeGuard::checkTypeAndThrow($newProjectCode, 'string');
 
+        $oldDBName = $this->databaseName();
         $this->projectCode = $newProjectCode;
-
+        $newDBName = $this->databaseName();
+        if (($oldDBName != '') && ($oldDBName != $newDBName)) {
+            if (MongoStore::hasDB($newDBName)) {
+                throw new \Exception("Cannot rename '$oldDBName' to '$newDBName'. New project name $newDBName already exists. Not renaming.");
+            }
+            MongoStore::renameDB($oldDBName, $newDBName);
+        }
     }
 
     /**

@@ -11,6 +11,7 @@ use Api\Model\Shared\Dto\ManageUsersDto;
 use Api\Model\Shared\Rights\ProjectRoles;
 use Api\Model\Mapper\JsonDecoder;
 use Api\Model\Mapper\JsonEncoder;
+use Api\Model\Mapper\MongoStore;
 use Api\Model\ProjectListModel;
 use Api\Model\ProjectModel;
 use Api\Model\ProjectSettingsModel;
@@ -91,6 +92,7 @@ class ProjectCommands
     }
 
     /**
+     * Archive a project, append a UTC timestamp to the project code and project name
      * @param string $projectId
      * @param string $userId
      * @return string projectId of the project archived.
@@ -116,7 +118,6 @@ class ProjectCommands
         $project->isArchived = true;
 
         // Append UTC timestamp to projectCode and projectName
-        //$newProjectCode = $project->projectCode;
         do {
             $archiveDate = gmdate('Ymd\THis\Z', time());
             $newProjectCode = $project->projectCode . "_" . $archiveDate;
@@ -135,11 +136,6 @@ class ProjectCommands
     public static function projectNameRegexPattern()
     {
         return '/ \[ARCHIVED \d{8}T\d{6}Z\]$/';
-    }
-
-    private static function setUniqueProjectCode($projectCode)
-    {
-
     }
 
     /**
