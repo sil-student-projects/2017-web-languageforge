@@ -61,6 +61,7 @@ class TestProjectCommands extends UnitTestCase
 
         $project->read($projectId);
         $this->assertTrue($project->isArchived);
+        ProjectCommands::deleteProjects(array($projectId));
     }
 
     public function testArchiveProjects_DateTimestampAppended()
@@ -78,6 +79,7 @@ class TestProjectCommands extends UnitTestCase
         $this->assertEqual(count($matches), 1);
         preg_match(ProjectCommands::projectNameRegexPattern(), $project->projectName, $matches);
         $this->assertEqual(count($matches), 1);
+        ProjectCommands::deleteProjects(array($projectId));
     }
 
     public function testCheckIfArchivedAndThrow_NonArchivedProject_NoThrow()

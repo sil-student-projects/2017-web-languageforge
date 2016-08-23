@@ -11,14 +11,12 @@ use Api\Model\Shared\Dto\ManageUsersDto;
 use Api\Model\Shared\Rights\ProjectRoles;
 use Api\Model\Mapper\JsonDecoder;
 use Api\Model\Mapper\JsonEncoder;
-use Api\Model\Mapper\MongoStore;
 use Api\Model\ProjectListModel;
 use Api\Model\ProjectModel;
 use Api\Model\ProjectSettingsModel;
 use Api\Model\Shared\Rights\SystemRoles;
 use Api\Model\Sms\SmsSettings;
 use Api\Model\UserModel;
-use MongoDB\BSON\UTCDateTime;
 use Palaso\Utilities\CodeGuard;
 
 class ProjectCommands
@@ -154,8 +152,8 @@ class ProjectCommands
             // If projectCode sans UTC timestamp doesn't exist, remove timestamp from the projectCode.
             // Otherwise, leave the projectCode intact.
             $newProjectCode = preg_replace(ProjectCommands::projectCodeRegexPattern(), '', $project->projectCode, 1, $modifyCount);
-            if (($modifyCount == 1) && !ProjectCommands::ProjectCodeExists($newProjectCode)) {
-                $project->projectCode = $newProjectCode;
+            if (($modifyCount == 1) && !ProjectCommands::projectCodeExists($newProjectCode)) {
+                $project->renameProjectCode($newProjectCode);
             }
             // Similar for UTC timestamp and projectName
             $archiveDateTime = 0;
@@ -166,7 +164,7 @@ class ProjectCommands
             }
             $newProjectName = preg_replace(ProjectCommands::projectNameRegexPattern(), '', $project->projectName, 1, $modifyCount);
             if ($modifyCount == 1) {
-                if (!ProjectCommands::ProjectNameExists($newProjectName)) {
+                if (!ProjectCommands::projectNameExists($newProjectName)) {
                     $project->projectName = $newProjectName;
                 }
                 // If the projectName already exists, keep the archive timestamp on the new project name

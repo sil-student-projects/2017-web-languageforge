@@ -13,6 +13,7 @@ use Api\Model\Mapper\Id;
 use Api\Model\Mapper\IdReference;
 use Api\Model\Mapper\MapOf;
 use Api\Model\Mapper\MapperUtils;
+use Api\Model\Mapper\MongoStore;
 use Api\Model\Scriptureforge\Rapuma\RapumaRoles;
 use Api\Model\Scriptureforge\RapumaProjectModel;
 use Api\Model\Scriptureforge\Sfchecks\SfchecksRoles;
@@ -117,22 +118,35 @@ class ProjectModel extends Mapper\MapperModel
     }
 
     /**
-     * Rename the project code and Mongo database name
+     * Rename the project code which also renames the Mongo DB name
      * @param string $newProjectCode
      * @throws \Exception
      */
     public function renameProjectCode($newProjectCode)
     {
-        CodeGuard::checkTypeAndThrow($newProjectCode, 'string');
+        CodeGuard::checkEmptyAndThrow($newProjectCode, 'newProjectCode');
 
         $oldDBName = $this->databaseName();
         $this->projectCode = $newProjectCode;
         $newDBName = $this->databaseName();
-        if (($oldDBName != '') && ($oldDBName != $newDBName)) {
-            if (MongoStore::hasDB($newDBName)) {
-                throw new \Exception("Cannot rename '$oldDBName' to '$newDBName'. New project name $newDBName already exists. Not renaming.");
-            }
+        ProjectModel::renameDBName($oldDBName, $newDBName);
+    }
+
+    /**
+     * Copies the oldDBName to newDBName, then removes oldDBName
+     * @param string $oldDBName
+     * @param string $newDBName
+     * @throws \Exception
+     */
+    private function renameDBName($oldDBName, $newDBName) {
+        CodeGuard::checkTypeAndThrow($oldDBName, 'string');
+        CodeGuard::checkTypeAndThrow($newDBName, 'string');
+        CodeGuard::checkEmptyAndThrow($oldDBName, 'oldDBName');
+        CodeGuard::checkEmptyAndThrow($newDBName, 'newDBName');
+
+        if ($oldDBName != $newDBName) {
             MongoStore::renameDB($oldDBName, $newDBName);
+            MongoStore::dropDB($oldDBName);
         }
     }
 
