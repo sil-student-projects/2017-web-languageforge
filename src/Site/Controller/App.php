@@ -124,8 +124,13 @@ class App extends Base
         $this->addJavascriptNotMinifiedFiles(NG_BASE_FOLDER . $appFolder . '/js/vendor');
         $this->addJavascriptNotMinifiedFiles(NG_BASE_FOLDER . $appFolder . '/js/assets');
 
-        $this->addCssFiles(NG_BASE_FOLDER . 'bellows/css');
-        $this->addCssFiles(NG_BASE_FOLDER . 'bellows/directive');
+        if ($this->data['isBootstrap4']) {
+            $this->addCssFiles(NG_BASE_FOLDER . 'bellows/cssBootstrap4');
+            $this->addCssFiles(NG_BASE_FOLDER . 'bellows/directive/bootstrap4');
+        } else {
+            $this->addCssFiles(NG_BASE_FOLDER . 'bellows/cssBootstrap2');
+            $this->addCssFiles(NG_BASE_FOLDER . 'bellows/directive/bootstrap2');
+        }
         $this->addCssFiles(NG_BASE_FOLDER . $bootstrapFolder);
     }
 
