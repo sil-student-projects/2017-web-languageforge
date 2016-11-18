@@ -90,12 +90,15 @@ class Base
         }
 
         // Add general Angular app dependencies
-        $dependencies = $this->getAngularAppJsDependencies();
+        $dependencies = $this->getAngularAppDependencies();
         foreach ($dependencies["js"] as $dependencyFilePath) {
             $this->data['vendorFilesJs'][] = $dependencyFilePath;
         }
         foreach ($dependencies["min"] as $dependencyFilePath) {
             $this->data['vendorFilesMinJs'][] = $dependencyFilePath;
+        }
+        foreach ($dependencies["css"] as $dependencyFilePath) {
+            $this->data['vendorFilesCss'][] = $dependencyFilePath;
         }
 
         $this->populateHeaderMenuViewdata();
@@ -108,7 +111,7 @@ class Base
         try {
             return $app['twig']->render($viewName.'.html.twig', $this->data);
         } catch (\Twig_Error_Loader $e) {
-            $app->abort(404, "Page not found: $viewName.twig");
+            $app->abort(404, "Page not found: $viewName.twig\n" . $e->getRawMessage() . "\n" . $e->getTraceAsString());
         }
 
         return new Response('Should not get here', 500);
@@ -196,7 +199,7 @@ class Base
     }
 
     /**
-     * Reads the js_dependencies.json file and creates a structure for use in the controller above
+     * Reads the app_dependencies.json file and creates a structure for use in the controller above
      *
      * The format of a line in the JSON is expected to be:
      * "itemName": {"path": "folderPath"}
@@ -210,10 +213,12 @@ class Base
      *
      * @return array
      */
-    protected function getAngularAppJsDependencies() {
-        $jsonData = json_decode(file_get_contents(APPPATH . "js_dependencies.json"), true);
+    protected function getAngularAppDependencies() {
+        $jsonData = json_decode(file_get_contents(APPPATH . "app_dependencies.json"), true);
         $jsFilesToReturn = array();
         $jsMinFilesToReturn = array();
+        $cssFilesToReturn = array();
+
         foreach ($jsonData as $itemName => $properties) {
             $path = $properties["path"];
 
@@ -225,12 +230,15 @@ class Base
                 }
                 foreach ($jsFile as $file) {
                     if (StringUtil::endsWith($file, '.js')) {
-                        $jsFilesToReturn[] = "$path/$file";
+                        $file = "$path/$file";
                     } else {
-                        $jsFilesToReturn[] = "$path/$file.js";
+                        $file = "$path/$file.js";
+                    }
+                    if (file_exists($file)) {
+                        $jsFilesToReturn[] = $file;
                     }
                 }
-            } else {
+            } elseif (file_exists("$path/$itemName.js")) {
                 $jsFilesToReturn[] = "$path/$itemName.js";
             }
 
@@ -263,8 +271,25 @@ class Base
                 $jsMinFilesToReturn[] = "$path/$itemName.min.js";
             }
 
+            // process CSS Files
+            if (array_key_exists("cssFile", $properties)) {
+                $cssFile = $properties["cssFile"];
+                if (!is_array($cssFile)) {
+                    $cssFile = [$cssFile];
+                }
+                foreach ($cssFile as $file) {
+                    if (StringUtil::endsWith($file, '.css')) {
+                        $cssFilesToReturn[] = "$path/$file";
+                    } else {
+                        $cssFilesToReturn[] = "$path/$file.css";
+                    }
+                }
+            }
+
+
         }
-        return array("js" => $jsFilesToReturn, "min" => $jsMinFilesToReturn);
+        return array("js" => $jsFilesToReturn, "min" => $jsMinFilesToReturn, "css" => $cssFilesToReturn);
     }
+
 
 }

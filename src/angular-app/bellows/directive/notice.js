@@ -99,7 +99,7 @@ angular.module('palaso.ui.notice', ['ui.bootstrap', 'bellows.services', 'ngAnima
   .directive('silNotices', ['silNoticeService', 'sessionService', function(noticeService, sessionService) {
     return {
       restrict : 'EA',
-      templateUrl : '/angular-app/bellows/directive/notice.html',
+      templateUrl : '/angular-app/bellows/directive/' + bootstrapVersion + '/notice.html',
       replace : true,
       compile : function(tElement, tAttrs) {
         return function($scope, $elem, $attr) {

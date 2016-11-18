@@ -46,14 +46,17 @@ class App extends Base
             }
         }
 
-        if ($this->data['isBootstrap4']) {
-            $appFolder .= "/bootstrap4";
+        if ($this->data['isBootstrap4'] && file_exists(NG_BASE_FOLDER . $appFolder . "/bootstrap4")) {
+            $bootstrapFolder = "$appFolder/bootstrap4";
         } elseif (file_exists(NG_BASE_FOLDER . $appFolder . "/bootstrap2")) {
-            $appFolder .= "/bootstrap2";
+            $bootstrapFolder = "$appFolder/bootstrap2";
+        } else {
+            $bootstrapFolder = $appFolder;
         }
 
         $this->data['appName'] = $appName;
         $this->data['appFolder'] = $appFolder;
+        $this->data['bootstrapFolder'] = $bootstrapFolder;
 
         $this->_userId = SilexSessionHelper::getUserId($app);
 
@@ -85,8 +88,7 @@ class App extends Base
 
         // determine help menu button visibility
         // placeholder for UI language 'en' to support translation of helps in the future
-        // make sure to remove the ".." once we've gotten rid of the bootstrap2/4 folders in the appFolder
-        $helpsFolder = NG_BASE_FOLDER . $appFolder . "/../helps/en/page";
+        $helpsFolder = NG_BASE_FOLDER . $appFolder . "/helps/en/page";
         if (file_exists($helpsFolder) &&
             iterator_count(new \FilesystemIterator($helpsFolder, \FilesystemIterator::SKIP_DOTS)) > 0
         ) {
@@ -122,8 +124,9 @@ class App extends Base
         $this->addJavascriptNotMinifiedFiles(NG_BASE_FOLDER . $appFolder . '/js/vendor');
         $this->addJavascriptNotMinifiedFiles(NG_BASE_FOLDER . $appFolder . '/js/assets');
 
-        $this->addCssFiles(NG_BASE_FOLDER . 'bellows');
-        $this->addCssFiles(NG_BASE_FOLDER . $appFolder);
+        $this->addCssFiles(NG_BASE_FOLDER . 'bellows/css');
+        $this->addCssFiles(NG_BASE_FOLDER . 'bellows/directive');
+        $this->addCssFiles(NG_BASE_FOLDER . $bootstrapFolder);
     }
 
 
