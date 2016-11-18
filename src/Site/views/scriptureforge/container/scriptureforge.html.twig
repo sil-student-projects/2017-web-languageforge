@@ -16,6 +16,7 @@
         </div>
         <div id="header-nav" class="pull-left">
             <ul class="sf-menu">
+                {% if app.website.domain == "scriptureforge.local" %} <li><a>(Bootstrap 2)</a></li>{% endif %}
                 <li><a href="/">Home</a></li>
                 <!--
                 <li><a href="/explore">Explore</a>
@@ -82,6 +83,7 @@
             </div>
             <div id="header-nav" class="pull-left">
                 <ul class="sf-menu">
+                    {% if app.website.domain == "scriptureforge.local" %} <li><a>(Bootstrap 4)</a></li>{% endif %}
                     <li><a href="/">Home</a></li>
                     <!--
                     <li><a href="/explore">Explore</a>

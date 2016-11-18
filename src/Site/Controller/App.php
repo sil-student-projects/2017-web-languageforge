@@ -46,6 +46,12 @@ class App extends Base
             }
         }
 
+        if ($this->data['isBootstrap4']) {
+            $appFolder .= "/bootstrap4";
+        } elseif (file_exists(NG_BASE_FOLDER . $appFolder . "/bootstrap2")) {
+            $appFolder .= "/bootstrap2";
+        }
+
         $this->data['appName'] = $appName;
         $this->data['appFolder'] = $appFolder;
 
@@ -79,7 +85,8 @@ class App extends Base
 
         // determine help menu button visibility
         // placeholder for UI language 'en' to support translation of helps in the future
-        $helpsFolder = NG_BASE_FOLDER . $appFolder . "/helps/en/page";
+        // make sure to remove the ".." once we've gotten rid of the bootstrap2/4 folders in the appFolder
+        $helpsFolder = NG_BASE_FOLDER . $appFolder . "/../helps/en/page";
         if (file_exists($helpsFolder) &&
             iterator_count(new \FilesystemIterator($helpsFolder, \FilesystemIterator::SKIP_DOTS)) > 0
         ) {
