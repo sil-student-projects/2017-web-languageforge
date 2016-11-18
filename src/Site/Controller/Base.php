@@ -35,9 +35,7 @@ class Base
         $this->data['cssFiles'] = array();
         $this->data['vendorFilesJs'] = array();
         $this->data['vendorFilesMinJs'] = array();
-
-        $this->addCssFiles("Site/views/shared/css");
-        $this->addCssFiles($this->getThemePath()."/css");
+        $this->data['isBootstrap4'] = false;
     }
 
     /** @var array data used to render templates */
@@ -65,6 +63,14 @@ class Base
     protected function renderPage(Application $app, $viewName) {
         if ($viewName == 'favicon.ico') {
             $viewName = 'container';
+        }
+
+        if ($this->data['isBootstrap4']) {
+            $this->addCssFiles("vendor_bower/bootstrap");
+            $this->addCssFiles($this->getThemePath()."/cssBootstrap4");
+        } else {
+            $this->addCssFiles("Site/views/shared/cssBootstrap2");
+            $this->addCssFiles($this->getThemePath()."/cssBootstrap2");
         }
 
         $this->_isLoggedIn = $this->isLoggedIn($app);
@@ -260,4 +266,5 @@ class Base
         }
         return array("js" => $jsFilesToReturn, "min" => $jsMinFilesToReturn);
     }
+
 }

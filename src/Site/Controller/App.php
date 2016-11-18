@@ -19,6 +19,8 @@ class App extends Base
 
     public function setupNgView(Application $app, $appName, $projectId = '')
     {
+        $this->data['isBootstrap4'] = $this->isBootstrap4($appName);
+
         $siteFolder = NG_BASE_FOLDER . $this->website->base;
         $parentAppFolder = '';
         $appFolder = $this->website->base . '/' . $appName;
@@ -115,6 +117,38 @@ class App extends Base
 
         $this->addCssFiles(NG_BASE_FOLDER . 'bellows');
         $this->addCssFiles(NG_BASE_FOLDER . $appFolder);
+    }
+
+
+    private function isBootstrap4($appName) {
+
+        // replace "appName" with the name of the angular app that has been migrated to bootstrap 4
+        // Note that this will affect both the angular app and the app frame
+
+        $sharedAppsInBoostrap4 = array("bellowsApp1", "bellowsApp2");
+
+        $siteAppsInBootstrap4 = array(
+            "scriptureforge" => array("appName"),
+            "languageforge" => array(),
+            "waaqwiinaagiwritings" => array(),
+            "jamaicanpsalms.scriptureforge" => array(),
+            "demo.scriptureforge" => array(),
+        );
+
+        $siteLookup = preg_replace('/^(dev\.)?(\S+)\.(org|local|com)$/', '$2', $this->website->domain);
+
+        if (in_array($appName, $sharedAppsInBoostrap4)) {
+            return true;
+        }
+
+        if (array_key_exists($siteLookup, $siteAppsInBootstrap4)) {
+            if (in_array($appName, $siteAppsInBootstrap4[$siteLookup])) {
+                return true;
+            }
+
+        }
+
+        return false;
     }
 
 }

@@ -27,7 +27,11 @@
     </head>
     <body>
         <div id="maincontainer">
-            {% block header %}{% endblock %}
+            {% if isBootstrap4 %}
+                {% block headerBootstrap4 %}{% endblock %}
+            {% else %}
+                {% block headerBootstrap2 %}{% endblock %}
+            {% endif %}
             {% block content %}{% endblock %}
             {% block script %}{% endblock %}
             <div class="clearfooter"></div>
