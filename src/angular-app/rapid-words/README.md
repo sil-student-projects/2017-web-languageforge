@@ -1,5 +1,21 @@
 # RapidWords
 
+Angular2 implementation of RapidWords
+
+## Getting Started
+
+1. Clone the repository from Github
+2. Change directory to `src/angular-app/rapid-words`
+3. Run `npm install` to install all Node modules (including Bootstrap 4)
+4. Run `npm start` to fire up the development server.
+5. Navigate to `localhost:4200` as indicated by the output from `npm start`.
+
+# Boiler Plate
+
+The following information was generated
+by the Angular CLI as an overall introduction
+to running and testing the application.
+
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.24.
 
 ## Development server
