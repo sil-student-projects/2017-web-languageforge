@@ -45,6 +45,8 @@
 //   'build-php'
 //   'markdown'
 //   'default'
+//   'sass',
+//   'sass:watch'
 
 // -------------------------------------
 //   Modules
@@ -62,6 +64,7 @@
 // gulp-protractor   : A helper for protactor and gulp
 // gulp-rename       : Rename files
 // gulp-replace      : A string replace plugin for gulp
+// gulp-sass         : Sass plugin for Gulp
 // gulp-uglify       : Minify files with UglifyJS
 // gulp-util         : Utility functions for gulp plugins
 // lodash.template   : The lodash method `_.template` exported as a module
@@ -89,6 +92,7 @@ var _template = require('lodash.template');
 var Server = require('karma').Server;
 var path = require('path');
 var stylish = require('jshint-stylish');
+var sass = require('gulp-sass');
 
 var execute = function (command, options, callback) {
   if (options == undefined) {
@@ -257,7 +261,7 @@ gulp.task('test-php', function (cb) {
     options,
     cb
   );
-  
+
   // return gulp.src(src)
   //   .pipe(phpunit('src/vendor/bin/phpunit', options));
 });
@@ -840,3 +844,14 @@ gulp.task('markdown').description = 'Generate helps markdown files';
 // -------------------------------------
 
 gulp.task('default', gulp.series('build'));
+
+
+gulp.task('sass', function () {
+  return gulp.src('src/Site/views/languageforge/theme/default/cssBootstrap4/sass/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('src/Site/views/languageforge/theme/default/cssBootstrap4/'));
+});
+
+gulp.task('sass:watch', function () {
+  gulp.watch('src/Site/views/languageforge/theme/default/cssBootstrap4/sass/**/*.scss', gulp.series('sass'));
+});
