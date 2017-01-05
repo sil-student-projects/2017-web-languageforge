@@ -252,7 +252,7 @@ class AppModel {
 
         $siteAppsInBootstrap4 = array(
             "scriptureforge" => array("appName"),
-            "languageforge" => array(),
+            "languageforge" => array("projects"),
             "waaqwiinaagiwritings" => array(),
             "jamaicanpsalms.scriptureforge" => array(),
             "demo.scriptureforge" => array(),
