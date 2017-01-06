@@ -13,7 +13,9 @@
     "url": "https://github.com/sillsdev/web-languageforge.git",
     "alternate-url": "https://github.com/sillsdev/web-scriptureforge.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "sharedb": "^1.0.0-beta.7"
+  },
   "devDependencies": {
     "async": "~1.4.2",
     "es6-shim": "^0.35.1",
