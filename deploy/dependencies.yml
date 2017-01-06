@@ -3,6 +3,9 @@
 - name: Deploy development environment for xForge (languageforge.org and scriptureforge.org)
   hosts: all
   become: yes
+  vars:
+    nvm_version: 0.33.0
+    node_version: 6.9.3
   pre_tasks:
     - include_vars: "vars_{{ deploy }}.yml"
     - name: Add PHP7.0 ppa for Trusty
@@ -32,9 +35,27 @@
         - postfix
         - unzip
         - p7zip-full
-        - npm
+        - build-essential
+        - libssl-dev
 
-    - file: src=/usr/bin/nodejs dest=/usr/local/bin/node state=link
+    - name: ensure nvm install file is removed
+      file: path="/tmp/install.sh" state=absent force=true
+
+    - name: download the nvm (node version manager) install script
+      get_url: "url=https://raw.githubusercontent.com/creationix/nvm/v{{nvm_version}}/install.sh dest=/tmp/install.sh"
+
+    - name: execute the nvm install script
+      shell: bash install.sh chdir=/tmp executable=/bin/bash
+
+    - name: register the NVM_DIR
+      shell: export NVM_DIR="{{ansible_env.HOME}}/.nvm" && echo $NVM_DIR
+      register: nvm_dir
+
+    - name: install the specified node version using the nvm command and set it as default
+      shell: 'export NVM_DIR="{{ansible_env.HOME}}/.nvm" && [ -s "{{nvm_dir.stdout}}/nvm.sh" ] && . {{nvm_dir.stdout}}/nvm.sh &&
+              nvm install v{{node_version}} && nvm run {{node_version}} --version && nvm alias default {{node_version}}'
+      args:
+        creates: "{{ansible_env.HOME}}/.nvm/versions/node/v{{node_version}}"
 
     - name: install Composer
       shell: php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin --filename=composer
