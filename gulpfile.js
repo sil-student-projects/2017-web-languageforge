@@ -846,12 +846,18 @@ gulp.task('markdown').description = 'Generate helps markdown files';
 gulp.task('default', gulp.series('build'));
 
 
+// -------------------------------------
+//   Task: Compile all the sass files into a single css file
+// -------------------------------------
 gulp.task('sass', function () {
   return gulp.src('src/Site/views/languageforge/theme/default/cssBootstrap4/sass/**/*.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('src/Site/views/languageforge/theme/default/cssBootstrap4/'));
 });
 
+// -------------------------------------
+//   Task: Watch the primary sass folder for any changes and recompile via the sass task
+// -------------------------------------
 gulp.task('sass:watch', function () {
   gulp.watch('src/Site/views/languageforge/theme/default/cssBootstrap4/sass/**/*.scss', gulp.series('sass'));
 });
