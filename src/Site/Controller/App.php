@@ -39,7 +39,7 @@ class App extends Base
             $projectId = '';
         }
 
-        $this->data['isAngular2'] = $appModel->isAngular2;
+        $this->data['isAngular2'] = $appModel->isAppAngular2($appName);
         $this->data['isBootstrap4'] = $appModel->isBootstrap4;
         $this->data['appName'] = $appName;
         $this->data['appFolder'] = $appModel->appFolder;
@@ -74,7 +74,13 @@ class App extends Base
         $this->addJavascriptFiles($appModel->bellowsFolder . '/js', array('vendor', 'assets'));
         $this->addJavascriptFiles($appModel->bellowsFolder . '/directive');
         $this->addJavascriptFiles($appModel->siteFolder . '/js', array('vendor', 'assets'));
-        $this->addJavascriptFiles($appModel->appFolder , array('js/vendor', 'js/assets'));
+
+        if ($this->data['isAngular2']) {
+            $this->addJavascriptFiles($appModel->appFolder . '/dist');
+        } else {
+            $this->addJavascriptFiles($appModel->appFolder, array('js/vendor', 'js/assets'));
+        }
+
         if ($appModel->parentAppFolder) {
             $this->addJavascriptFiles($appModel->parentAppFolder, array('js/vendor', 'js/assets'));
         }
@@ -92,7 +98,7 @@ class App extends Base
             $this->addCssFiles(NG_BASE_FOLDER . 'bellows/cssBootstrap2');
             $this->addCssFiles(NG_BASE_FOLDER . 'bellows/directive/bootstrap2');
         }
-        $this->addCssFiles($appModel->bootstrapFolder);
+        $this->addCssFiles($appModel->bootstrapFolder, array('node_modules'));
     }
 }
 
@@ -136,11 +142,6 @@ class AppModel {
     public $isBootstrap4;
 
     /**
-     * @var bool
-     */
-    public $isAngular2;
-
-    /**
      * @var string
      */
     public $bellowsFolder;
@@ -163,7 +164,6 @@ class AppModel {
     }
 
     private function determineFolderPaths($appName, $projectId, $website, $isPublic) {
-        $isAngular2 = $this->isAppAngular2($appName);
         $isBootstrap4 = $this->isAppBootstrap4($appName, $website);
         $siteFolder = NG_BASE_FOLDER . $website->base;
         $sitePublicFolder = "$siteFolder/public";
@@ -247,11 +247,11 @@ class AppModel {
         }
     }
 
-    private function isAppAngular2($appName) {
+    public function isAppAngular2($appName) {
         $siteAppsInAngular2 = array(
-            "rapid-words" => array(),
+            "rapid-words",
+            "review-suggest"
         );
-
         return in_array($appName, $siteAppsInAngular2);
     }
 
