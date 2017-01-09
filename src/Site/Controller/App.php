@@ -39,6 +39,7 @@ class App extends Base
             $projectId = '';
         }
 
+        $this->data['isAngular2'] = $appModel->isAngular2;
         $this->data['isBootstrap4'] = $appModel->isBootstrap4;
         $this->data['appName'] = $appName;
         $this->data['appFolder'] = $appModel->appFolder;
@@ -135,6 +136,11 @@ class AppModel {
     public $isBootstrap4;
 
     /**
+     * @var bool
+     */
+    public $isAngular2;
+
+    /**
      * @var string
      */
     public $bellowsFolder;
@@ -157,6 +163,7 @@ class AppModel {
     }
 
     private function determineFolderPaths($appName, $projectId, $website, $isPublic) {
+        $isAngular2 = $this->isAppAngular2($appName);
         $isBootstrap4 = $this->isAppBootstrap4($appName, $website);
         $siteFolder = NG_BASE_FOLDER . $website->base;
         $sitePublicFolder = "$siteFolder/public";
@@ -238,6 +245,14 @@ class AppModel {
             default:
                 return false;
         }
+    }
+
+    private function isAppAngular2($appName) {
+        $siteAppsInAngular2 = array(
+            "rapid-words" => array(),
+        );
+
+        return in_array($appName, $siteAppsInAngular2);
     }
 
     private function isAppBootstrap4($appName, $website) {

@@ -36,6 +36,7 @@ class Base
         $this->data['vendorFilesJs'] = array();
         $this->data['vendorFilesMinJs'] = array();
         $this->data['isBootstrap4'] = false;
+        $this->data['isAngular2'] = false;
 
     }
 

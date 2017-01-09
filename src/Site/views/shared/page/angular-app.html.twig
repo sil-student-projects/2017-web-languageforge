@@ -37,5 +37,9 @@
         <script src="/{{ filename }}"></script>
     {% endfor %}
 
-    <script>angular.bootstrap(document.getElementById('app-container-for-bootstrap'), ['{{ appName }}']);</script>
+    {% if isAngular2 %}
+        <h1>Hello, World</h1>
+    {% else %}
+        <script>angular.bootstrap(document.getElementById('app-container-for-bootstrap'), ['{{ appName }}']);</script>
+    {% endif %}
 {% endblock %}
