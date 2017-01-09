@@ -39,6 +39,7 @@ class App extends Base
             $projectId = '';
         }
 
+        $this->data['isAngular2'] = $appModel->isAppAngular2($appName);
         $this->data['isBootstrap4'] = $appModel->isBootstrap4;
         $this->data['appName'] = $appName;
         $this->data['appFolder'] = $appModel->appFolder;
@@ -73,7 +74,13 @@ class App extends Base
         $this->addJavascriptFiles($appModel->bellowsFolder . '/js', array('vendor', 'assets'));
         $this->addJavascriptFiles($appModel->bellowsFolder . '/directive');
         $this->addJavascriptFiles($appModel->siteFolder . '/js', array('vendor', 'assets'));
-        $this->addJavascriptFiles($appModel->appFolder , array('js/vendor', 'js/assets'));
+
+        if ($this->data['isAngular2']) {
+            $this->addJavascriptFiles($appModel->appFolder . '/dist');
+        } else {
+            $this->addJavascriptFiles($appModel->appFolder, array('js/vendor', 'js/assets'));
+        }
+
         if ($appModel->parentAppFolder) {
             $this->addJavascriptFiles($appModel->parentAppFolder, array('js/vendor', 'js/assets'));
         }
@@ -91,7 +98,7 @@ class App extends Base
             $this->addCssFiles(NG_BASE_FOLDER . 'bellows/cssBootstrap2');
             $this->addCssFiles(NG_BASE_FOLDER . 'bellows/directive/bootstrap2');
         }
-        $this->addCssFiles($appModel->bootstrapFolder);
+        $this->addCssFiles($appModel->bootstrapFolder, array('node_modules'));
     }
 }
 
@@ -172,10 +179,12 @@ class AppModel {
                 $parentAppFolder = "$sitePublicFolder/$appName";
                 $appFolder = "$parentAppFolder/$projectId";
                 $isChildApp = true;
+                $appName = "$appName-$projectId";
             } elseif ($this->isChildApp($bellowsPublicAppFolder, $appName, $projectId)) {
                 $parentAppFolder = "$bellowsPublicAppFolder/$appName";
                 $appFolder = "$parentAppFolder/$projectId";
                 $isChildApp = true;
+                $appName = "$appName-$projectId";
                 $isBellows = true;
             } elseif ($this->appExists($sitePublicFolder, $appName)) {
                 $appFolder = "$sitePublicFolder/$appName";
@@ -190,9 +199,11 @@ class AppModel {
                 $parentAppFolder = "$siteFolder/$appName";
                 $appFolder = "$parentAppFolder/$projectId";
                 $isChildApp = true;
+                $appName = "$appName-$projectId";
             } elseif ($this->isChildApp($bellowsAppFolder, $appName, $projectId)) {
                 $parentAppFolder = "$bellowsAppFolder/$appName";
                 $appFolder = "$parentAppFolder/$projectId";
+                $appName = "$appName-$projectId";
                 $isChildApp = true;
                 $isBellows = true;
             } elseif ($this->appExists($siteFolder, $appName)) {
@@ -205,15 +216,9 @@ class AppModel {
             }
         }
 
-        // todo: implement this in the app controller
-        $appName = "$appName-$projectId";
-
-        // check to see if the appName is a child-app of any of valid locations
-
-        if ($isBootstrap4 && file_exists("$appFolder/bootstrap4")) {
-            $bootstrapFolder = "$appFolder/bootstrap4";
-        } elseif (file_exists("$appFolder/bootstrap2")) {
-            $bootstrapFolder = "$appFolder/bootstrap2";
+        $bootstrapNumber = ($isBootstrap4) ? 4 : 2;
+        if (file_exists("$appFolder/bootstrap$bootstrapNumber")) {
+            $bootstrapFolder = "$appFolder/bootstrap$bootstrapNumber";
         } else {
             $bootstrapFolder = $appFolder;
         }
@@ -234,7 +239,6 @@ class AppModel {
             case "sfchecks":
             case "lexicon":
             case "semdomtrans":
-
             case "projectmanagement":
             case "usermanagement":
                 return true;
@@ -243,19 +247,28 @@ class AppModel {
         }
     }
 
+    public function isAppAngular2($appName) {
+        $siteAppsInAngular2 = array(
+            "rapid-words",
+            "review-suggest"
+        );
+        return in_array($appName, $siteAppsInAngular2);
+    }
+
     private function isAppBootstrap4($appName, $website) {
 
         // replace "appName" with the name of the angular app that has been migrated to bootstrap 4
         // Note that this will affect both the angular app and the app frame
 
-        $sharedAppsInBoostrap4 = array("bellowsApp1", "bellowsApp2");
+        $sharedAppsInBoostrap4 = array("sharedApp1", "sharedApp2");
 
         $siteAppsInBootstrap4 = array(
             "scriptureforge" => array("appName"),
-            "languageforge" => array(),
+            "languageforge" => array("appName"),
             "waaqwiinaagiwritings" => array(),
             "jamaicanpsalms.scriptureforge" => array(),
             "demo.scriptureforge" => array(),
+            "rapid-words" => array(),
         );
 
         $siteLookup = preg_replace('/^(dev\.)?(\S+)\.(org|local|com)$/', '$2', $website->domain);

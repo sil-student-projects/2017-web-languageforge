@@ -9,6 +9,7 @@
 //   'do-reload'
 //   'reload'
 //   'lint'
+//   'generate-language-picker-assets'
 //   'mongodb-backup-prod-db'
 //   'mongodb-copy-backup-to-local'
 //   'mongodb-cleanup-backup-prod-db'
@@ -159,6 +160,32 @@ gulp.task('lint', function () {
     .pipe(jshint.reporter(stylish));
 });
 
+// -------------------------------------
+//   Task: Auto-generate language picker asset files
+// -------------------------------------
+gulp.task('generate-language-picker-assets', function (cb) {
+
+  // Manual prerequisite:
+  // copy from libpalaso:palaso-trusty64-master/SIL.WritingSystems/Resources/*.txt
+  // into scripts/language picker/
+
+  var options = {
+    dryRun: false,
+    silent: false,
+    cwd: './scripts/language picker/'
+  };
+
+  // auto-generated files written to src/angular-app/bellows/js/assets/
+  execute(
+    './build-json-language-data.py',
+    options,
+    cb
+  );
+});
+
+gulp.task('generate-language-picker-assets').description =
+  'Update asset files used for language picker';
+
 //region MongoDB
 
 // -------------------------------------
@@ -244,7 +271,7 @@ gulp.task('mongodb-copy-prod-db').description =
 // -------------------------------------
 //   Task: test-php
 // -------------------------------------
-gulp.task('test-php', function () {
+gulp.task('test-php', function (cb) {
   var src = 'test/php/phpunit.xml';
   var options = {
     dryRun: false,
@@ -252,8 +279,14 @@ gulp.task('test-php', function () {
     logJunit: 'PhpUnitTests.xml'
   };
   gutil.log("##teamcity[importData type='junit' path='PhpUnitTests.xml']");
-  return gulp.src(src)
-    .pipe(phpunit('src/vendor/bin/phpunit', options));
+  execute(
+    '/usr/bin/env php src/vendor/phpunit/phpunit/phpunit -c test/php/phpunit.xml',
+    options,
+    cb
+  );
+  
+  // return gulp.src(src)
+  //   .pipe(phpunit('src/vendor/bin/phpunit', options));
 });
 
 // -------------------------------------
