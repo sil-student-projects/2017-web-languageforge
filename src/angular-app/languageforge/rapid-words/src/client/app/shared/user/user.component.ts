@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LFApiService } from '../lf-api/lf-api.service';
+import { LfApiService } from '../services/lf-api.service';
 
 import { OnInit } from '@angular/core';
 
@@ -8,15 +8,20 @@ import { OnInit } from '@angular/core';
   selector: 'user-component',
   templateUrl: 'user.component.html',
   providers: [
-      LFApiService
+      LfApiService
   ]
 })
 export class UserComponent implements OnInit {
     ngOnInit(): void {
-        console.log('lf api inited')
+        console.log('lf api inited');
+        this.performAuthentication();
     }
 
-    constructor(private lfApi: LFApiService) {
+    constructor(private lfApi: LfApiService) {
         console.log('constructed UserComponent');
+    }
+
+    performAuthentication() {
+        this.lfApi.performAuthentication();
     }
 }
