@@ -4,7 +4,6 @@
   hosts: all
   become: yes
   vars:
-    nvm_version: 0.33.0
     node_version: 6.9.3
   pre_tasks:
     - include_vars: "vars_{{ deploy }}.yml"
@@ -35,27 +34,18 @@
         - postfix
         - unzip
         - p7zip-full
-        - build-essential
-        - libssl-dev
+        - npm
 
-    - name: ensure nvm install file is removed
-      file: path="/tmp/install.sh" state=absent force=true
+    - name: add node alias for nodejs
+      file: src=/usr/bin/nodejs dest=/usr/local/bin/node state=link
 
-    - name: download the nvm (node version manager) install script
-      get_url: "url=https://raw.githubusercontent.com/creationix/nvm/v{{nvm_version}}/install.sh dest=/tmp/install.sh"
-
-    - name: execute the nvm install script
-      shell: bash install.sh chdir=/tmp executable=/bin/bash
-
-    - name: register the NVM_DIR
-      shell: export NVM_DIR="{{ansible_env.HOME}}/.nvm" && echo $NVM_DIR
-      register: nvm_dir
-
-    - name: install the specified node version using the nvm command and set it as default
-      shell: 'export NVM_DIR="{{ansible_env.HOME}}/.nvm" && [ -s "{{nvm_dir.stdout}}/nvm.sh" ] && . {{nvm_dir.stdout}}/nvm.sh &&
-              nvm install v{{node_version}} && nvm run {{node_version}} --version && nvm alias default {{node_version}}'
+    - name: install n
+      shell: npm install -g n
       args:
-        creates: "{{ansible_env.HOME}}/.nvm/versions/node/v{{node_version}}"
+        creates: /usr/local/bin/n
+
+    - name: change node version
+      shell: "n {{node_version}}"
 
     - name: install Composer
       shell: php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin --filename=composer
