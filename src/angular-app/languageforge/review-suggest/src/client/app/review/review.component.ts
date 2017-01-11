@@ -10,7 +10,7 @@ import './operators';
   selector: 'review-component',
   templateUrl: 'review.component.html',
 })
-export class AppComponent {
+export class ReviewComponent {
   constructor() {
     console.log('Environment config', Config);
   }

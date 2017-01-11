@@ -10,7 +10,7 @@ import './operators';
   selector: 'project-select-component',
   templateUrl: 'project-select.component.html',
 })
-export class AppComponent {
+export class ProjectSelectComponent {
   constructor() {
     console.log('Environment config', Config);
   }
