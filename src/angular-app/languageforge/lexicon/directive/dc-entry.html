@@ -2,7 +2,9 @@
     <div id=realTimeDiv style="margin-top:30px;margin-left:105px; margin-bottom:10px">
         <label id="label" style="float:left; margin-right:10px; margin-top:5px; font-weight:bold">Real Time</label>
         <input id="realTime" style="width:367px; height:12px"></input>
+        <!--<div id="realTime"></div>-->
     </div>
+    <script src="/node/static/dist/bundle.js"></script>
     <dc-fieldrepeat config="config" model="model" control="control"></dc-fieldrepeat>
     <div data-ng-if="config.fields.senses.fieldOrder.length > 0">
         <!-- Place links to "Add Meaning" at the top and bottom of the senses so users can easily find them -->
