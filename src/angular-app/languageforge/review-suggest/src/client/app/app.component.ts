@@ -1,10 +1,5 @@
 import { Component } from '@angular/core';
 import { Config } from './shared/config/env.config';
-
-
-import { HomeComponent } from './home/home.component';
-
-
 import './operators';
 
 /**
@@ -12,7 +7,7 @@ import './operators';
  */
 @Component({
   moduleId: module.id,
-  selector: 'sd-app',
+  selector: 'app',
   templateUrl: 'app.component.html',
 })
 export class AppComponent {
