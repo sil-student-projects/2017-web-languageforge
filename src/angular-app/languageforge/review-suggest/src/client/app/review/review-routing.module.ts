@@ -10,4 +10,6 @@ import { ReviewComponent } from './review.component';
   ],
   exports: [RouterModule]
 })
+
 export class ReviewRoutingModule { }
+

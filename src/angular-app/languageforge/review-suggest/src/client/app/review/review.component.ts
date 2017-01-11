@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+
 /**
  * This class represents the lazy loaded AboutComponent.
  */
@@ -10,3 +11,4 @@ import { Component } from '@angular/core';
   styleUrls: ['review.component.css']
 })
 export class ReviewComponent { }
+

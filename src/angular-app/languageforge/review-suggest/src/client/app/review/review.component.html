@@ -6,7 +6,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+
     <script src="https://use.fontawesome.com/d2c950c3d1.js"></script>
+
   </head>
   
   <body class="vertical-center">
@@ -20,7 +22,7 @@
 
       <div class="row justify-content-center my-4">
         <div class="col-1">
-          <button type="button" class="btn btn-warning pull-right" style="height:100%;"><i class="fa fa-chevron-left"></i></button>
+          <button type="button" class="btn btn-warning pull-right" id="leftButton"><i class="fa fa-chevron-left"></i></button>
         </div>
         <div class="card col-auto">
           <div class="card-block text-center">
@@ -37,7 +39,7 @@
           </div>
         </div>
         <div class="col-1">
-          <button type="button" class="btn btn-warning pull-left" style="height:100%;"><i class="fa fa-chevron-right"></i></button>
+          <button type="button" class="btn btn-warning pull-left" id="rightButton"><i class="fa fa-chevron-right"></i></button>
         </div>
       </div>
 
@@ -46,11 +48,11 @@
           <button type="button" class="btn btn-success btn-block"><i class="fa fa-check" style="font-size:10vw;"></i></button>
         </div>
         <div class="col-4">
-          <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fa fa-comment" style="font-size:10vw;"></i></button>
+          <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target=".comment-modal"><i class="fa fa-comment" style="font-size:10vw;"></i></button>
         </div>
       </div>
 
-    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal fade comment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg vertical-center">
         <div class="modal-content">
           <div class="modal-header text-center">

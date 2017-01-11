@@ -8,4 +8,6 @@ import { ReviewRoutingModule } from './review-routing.module';
   declarations: [ReviewComponent],
   exports: [ReviewComponent]
 })
+
 export class ReviewModule { }
+

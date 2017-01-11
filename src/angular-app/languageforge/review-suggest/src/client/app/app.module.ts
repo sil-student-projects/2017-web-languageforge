@@ -9,13 +9,17 @@ import { ReviewModule } from './review/review.module';
 import { AboutModule } from './about/about.module';
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
+import { CreateAccountModule } from './create-account/create-account.module';
+
 
 @NgModule({
+
   imports: [BrowserModule, HttpModule, AppRoutingModule, ReviewModule, AboutModule, HomeModule, SharedModule.forRoot()],
+
   declarations: [AppComponent],
   providers: [{
     provide: APP_BASE_HREF,
-    useValue: '/app/review-suggest'
+    useValue: '<%= APP_BASE %>'
   }],
   bootstrap: [AppComponent]
 
