@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 // import 'rxjs/add/operator/do';  // for debugging
 
 @Injectable()
-export class ProjectService {
+export class LoginService {
 
   /**
    * Creates a new ProjectService with the injected Http.
@@ -13,14 +13,14 @@ export class ProjectService {
    */
   constructor(private http: Http) {}
 
-  /**
-   * Returns an Observable for the HTTP GET request for the JSON resource.
-   * @return {string[]} The Observable for the HTTP request.
-   */
-  get(): Observable<string[]> {
-    return this.http.get('http://languageforge.local/api/sf')
-                    .map((res: Response) => res.json())
-    //              .do(data => console.log('server data:', data))  // debug
+  login(username: string, password: string) {
+    let loginUrl = 'http://languageforge.local/app/login_check';
+
+    let params = new URLSearchParams();
+    params.set('_username', username);
+    params.set('_password', password);
+
+    return this.http.post(loginUrl, params)
                     .catch(this.handleError);
   }
 

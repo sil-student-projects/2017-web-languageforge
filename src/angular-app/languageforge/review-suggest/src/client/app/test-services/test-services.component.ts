@@ -1,29 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from '../shared/services/project.service';
+import { LoginService } from '../shared/services/login.service';
 
 @Component({
-  moduleId: module.id,
-  selector: 'sd-test-services',
-  templateUrl: 'test-services.component.html'
+    moduleId: module.id,
+    selector: 'sd-test-services',
+    templateUrl: 'test-services.component.html'
 })
 export class TestServicesComponent implements OnInit {
 
+    constructor(public loginService: LoginService) { }
 
-  constructor(public projectService: ProjectService) {}
+    errorMessage: string;
+    loginInfo: any[] = [];
 
-  projects: any[] = [];
-  errorMessage: string;
+    ngOnInit() {
+        this.loginAsAdmin();
+    }
 
-  ngOnInit() {
-    this.getProjects();
-  }
-
-  getProjects() {
-    this.projectService.get()
-      .subscribe(
-        projects => this.projects = projects,
-        error => this.errorMessage = <any>error
-      );
-  }
-
+    loginAsAdmin() {
+        this.loginService.login("admin", "password")
+            .subscribe(
+            loginInfo => console.log(this.loginInfo = loginInfo),
+            error => this.errorMessage = <any>error
+            );
+    }
 }
