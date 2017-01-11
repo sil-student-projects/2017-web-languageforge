@@ -18,7 +18,7 @@ import { ReviewModule } from './review/review.module';
   declarations: [AppComponent],
   providers: [{
     provide: APP_BASE_HREF,
-    useValue: '/app/review-suggest'
+    useValue: '<%= APP_BASE %>'
   }],
   bootstrap: [AppComponent]
 
