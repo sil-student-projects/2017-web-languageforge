@@ -7,7 +7,7 @@ import './operators';
  */
 @Component({
   moduleId: module.id,
-  selector: 'login-component',
+  selector: 'create-account-component',
   templateUrl: 'create-account.component.html',
 })
 export class CreateAccountComponent {
