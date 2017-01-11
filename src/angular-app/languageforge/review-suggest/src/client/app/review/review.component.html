@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Review &amp; Suggest</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  </head>
+  <body class="vertical-center">
+    <div class="container-fluid">
+
+      <div class="page-header">
+        <div class="col-12 text-center">
+          <h1>Project Name</h1>
+        </div>
+      </div>
+
+      <div class="row justify-content-center my-4">
+        <div class="col-1">
+          <button type="button" class="btn btn-warning pull-right" id="leftButton"><i class="fa fa-chevron-left"></i></button>
+        </div>
+        <div class="card col-auto">
+          <div class="card-block text-center">
+            <div class="row">
+              <h2 class="word">
+                <b>b-b-b-birdbirdbird</b>
+              </h2>
+            </div>
+            <div class="row">
+              <h3 class="meaning">
+                meaning
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-1">
+          <button type="button" class="btn btn-warning pull-left" id="rightButton"><i class="fa fa-chevron-right"></i></button>
+        </div>
+      </div>
+
+      <div class="row justify-content-center" style="margin-top:15px;">
+        <div class="col-4">
+          <button type="button" class="btn btn-success btn-block"><i class="fa fa-check" style="font-size:10vw;"></i></button>
+        </div>
+        <div class="col-4">
+          <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target=".comment-modal"><i class="fa fa-comment" style="font-size:10vw;"></i></button>
+        </div>
+      </div>
+
+    <div class="modal fade comment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg vertical-center">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h1>Comment Suggestion</h1>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="container">
+            <form action="submit">
+              <div class="form-group">
+                <div class="p-3">
+                  <textarea class="form-control" id="commentTextArea" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" style="">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/d2c950c3d1.js"></script>
+  </body>
+</html>
