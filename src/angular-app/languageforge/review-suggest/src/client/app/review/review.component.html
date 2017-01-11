@@ -7,24 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <style>
-    h1{
-      font-size: 10vw
-    }
-    .meaning{
-      font-size: 4vw;
-    }
-    .vertical-center {
-      min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-      min-height: 100vh; /* These two lines are counted as one :-)       */
-
-      display: flex;
-      align-items: center;
-    }
-    .word{
-      font-size: 6.5vw;
-    }
-    </style>
   </head>
   <body class="vertical-center">
     <div class="container-fluid">
@@ -37,7 +19,7 @@
 
       <div class="row justify-content-center my-4">
         <div class="col-1">
-          <button type="button" class="btn btn-warning pull-right" style="height:100%;"><i class="fa fa-chevron-left"></i></button>
+          <button type="button" class="btn btn-warning pull-right" id="leftButton"><i class="fa fa-chevron-left"></i></button>
         </div>
         <div class="card col-auto">
           <div class="card-block text-center">
@@ -54,7 +36,7 @@
           </div>
         </div>
         <div class="col-1">
-          <button type="button" class="btn btn-warning pull-left" style="height:100%;"><i class="fa fa-chevron-right"></i></button>
+          <button type="button" class="btn btn-warning pull-left" id="rightButton"><i class="fa fa-chevron-right"></i></button>
         </div>
       </div>
 

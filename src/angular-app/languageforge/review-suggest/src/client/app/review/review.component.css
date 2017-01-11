@@ -1,0 +1,22 @@
+h1{
+      font-size: 10vw
+}
+.meaning{
+    font-size: 4vw;
+}
+.vertical-center {
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
+
+    display: flex;
+    align-items: center;
+}
+.word{
+    font-size: 6.5vw;
+}
+#leftButton{
+    height:100%;
+}
+#rightButton{
+    height:100%;
+}
