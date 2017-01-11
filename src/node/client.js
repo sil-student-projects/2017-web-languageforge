@@ -3,8 +3,13 @@ var richText = require('rich-text');
 var Quill = require('quill');
 sharedb.types.register(richText.type);
 
+function getWebSocketUrl() {
+  var url = 'ws://' + window.location.host;
+  return (url.endsWith(':8080')) ? url : url + ':8080';
+}
+
 // Open WebSocket connection to ShareDB server
-var socket = new WebSocket('ws://' + window.location.host);
+var socket = new WebSocket(getWebSocketUrl());
 var connection = new sharedb.Connection(socket);
 
 // For testing reconnection
@@ -12,7 +17,7 @@ window.disconnect = function() {
   connection.close();
 };
 window.connect = function() {
-  var socket = new WebSocket('ws://' + window.location.host);
+  var socket = new WebSocket(getWebSocketUrl());
   connection.bindToSocket(socket);
 };
 
