@@ -16,11 +16,10 @@ export class LoginService {
   login(username: string, password: string) {
     let loginUrl = 'http://languageforge.local/app/login_check';
 
-    let params = new URLSearchParams();
-    params.set('_username', username);
-    params.set('_password', password);
+    let body = { '_username': username,
+                 '_password': password };
 
-    return this.http.post(loginUrl, params)
+    return this.http.post(loginUrl, JSON.stringify(body))
                     .catch(this.handleError);
   }
 
