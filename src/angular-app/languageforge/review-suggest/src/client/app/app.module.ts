@@ -17,7 +17,7 @@ import { ProjectSelectModule } from './project-select/project-select.module';
 
 @NgModule({
 
-  imports: [BrowserModule, HttpModule, AppRoutingModule, CreateAccountModule, ProjectSelectModule LoginModule, ReviewModule, AboutModule, HomeModule, SharedModule.forRoot()],
+  imports: [BrowserModule, HttpModule, AppRoutingModule, CreateAccountModule, ProjectSelectModule, LoginModule, ReviewModule, AboutModule, HomeModule, SharedModule.forRoot()],
 
 
   declarations: [AppComponent],
