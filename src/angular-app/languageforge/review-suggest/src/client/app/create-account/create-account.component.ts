@@ -10,7 +10,7 @@ import './operators';
   selector: 'login-component',
   templateUrl: 'create-account.component.html',
 })
-export class AppComponent {
+export class CreateAccountComponent {
   constructor() {
     console.log('Environment config', Config);
   }
