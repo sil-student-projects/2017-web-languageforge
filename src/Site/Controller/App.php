@@ -30,7 +30,7 @@ class App extends Base
             $projectId = '';
         }
 
-        $isPublicApp = (preg_match('@^/(public|auth)/@', $app['request']->getRequestUri()) == 1);
+        $isPublicApp = (preg_match('@^/(public|auth|app\/review\-suggest)/@', $app['request']->getRequestUri()) == 1);
 
         $appModel = new AppModel($appName, $projectId, $this->website, $isPublicApp);
 
@@ -195,6 +195,8 @@ class AppModel {
             } elseif ($this->appExists($bellowsPublicAppFolder, $appName)) {
                 $appFolder = "$bellowsPublicAppFolder/$appName";
                 $isBellows = true;
+            } elseif ($this->appExists($siteFolder, $appName)) {
+                $appFolder = "$siteFolder/$appName";
             } else {
                 throw new AppNotFoundException();
             }
@@ -268,7 +270,7 @@ class AppModel {
 
         $siteAppsInBootstrap4 = array(
             "scriptureforge" => array("appName"),
-            "languageforge" => array("login", "rapid-words", "userprofile", "changepassword", "forgot_password"),
+            "languageforge" => array("login", "rapid-words", "userprofile", "changepassword", "forgot_password", "activity", "projects"),
             "m.languageforge" => array("review-suggest"),
             "waaqwiinaagiwritings" => array(),
             "jamaicanpsalms.scriptureforge" => array(),
