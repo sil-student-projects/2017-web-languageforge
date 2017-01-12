@@ -5,12 +5,28 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+    h1{
+      font-size: 10vw
+    }
+    .meaning{
+      font-size: 4vw;
+    }
+    .vertical-center {
+      min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+      min-height: 100vh; /* These two lines are counted as one :-)       */
 
-
-    <script src="https://use.fontawesome.com/d2c950c3d1.js"></script>
-
+      display: flex;
+      align-items: center;
+    }
+    .word{
+      font-size: 6.5vw;
+    }
+    </style>
   </head>
-  
   <body class="vertical-center">
     <div class="container-fluid">
 
@@ -22,13 +38,13 @@
 
       <div class="row justify-content-center my-4">
         <div class="col-1">
-          <button type="button" class="btn btn-warning pull-right" id="leftButton"><i class="fa fa-chevron-left"></i></button>
+          <button type="button" class="btn btn-warning pull-right" style="height:100%;"><i class="fa fa-chevron-left"></i></button>
         </div>
         <div class="card col-auto">
           <div class="card-block text-center">
             <div class="row">
               <h2 class="word">
-                <b>Word</b>
+                <b>b-b-b-birdbirdbird</b>
               </h2>
             </div>
             <div class="row">
@@ -39,7 +55,7 @@
           </div>
         </div>
         <div class="col-1">
-          <button type="button" class="btn btn-warning pull-left" id="rightButton"><i class="fa fa-chevron-right"></i></button>
+          <button type="button" class="btn btn-warning pull-left" style="height:100%;"><i class="fa fa-chevron-right"></i></button>
         </div>
       </div>
 
@@ -48,11 +64,11 @@
           <button type="button" class="btn btn-success btn-block"><i class="fa fa-check" style="font-size:10vw;"></i></button>
         </div>
         <div class="col-4">
-          <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target=".comment-modal"><i class="fa fa-comment" style="font-size:10vw;"></i></button>
+          <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fa fa-comment" style="font-size:10vw;"></i></button>
         </div>
       </div>
 
-    <div class="modal fade comment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg vertical-center">
         <div class="modal-content">
           <div class="modal-header text-center">
@@ -75,6 +91,11 @@
 
     </div>
 
-
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/d2c950c3d1.js"></script>
   </body>
 </html>
+Add Comment Coll

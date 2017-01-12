@@ -132,6 +132,7 @@
     "@angular/platform-browser-dynamic": "~2.4.0",
     "@angular/router": "~3.4.1",
     "core-js": "^2.4.1",
+    "font-awesome": "^4.7.0",
     "intl": "^1.2.5",
     "reflect-metadata": "^0.1.8",
     "rxjs": "5.0.2",
