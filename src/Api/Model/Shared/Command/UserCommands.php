@@ -290,6 +290,23 @@ class UserCommands
     }
 
     /**
+     * Authentication user
+     * @param string $username
+     * @param string $password
+     * @param Application $app
+    */
+    public static function authenticate($username, $password, $app) {
+        $user = new PasswordModel();
+        if ($user->readByProperty('username', $username)) {
+            if ($user->verifyPassword($password)) {
+                Auth::login($app, $username, $password);
+                return Auth::result(Auth::LOGIN_SUCCESS, '', 'location');
+            }
+        }
+        return Auth::result(Auth::LOGIN_FAIL_USER_UNAUTHORIZED, '', 'location');
+    }
+
+    /**
      * Activate a user on the specified site and validate email if it was empty, otherwise login
      * @param string $username
      * @param string $password
@@ -306,10 +323,7 @@ class UserCommands
         CodeGuard::checkEmptyAndThrow($email, 'email');
         CodeGuard::checkNullAndThrow($website, 'website');
         $identityCheck = self::checkIdentity($username, $email, $website);
-        if ($website->allowSignupFromOtherSites &&
-            $identityCheck->usernameExists && !$identityCheck->usernameExistsOnThisSite &&
-            ($identityCheck->emailIsEmpty || $identityCheck->emailMatchesAccount)
-        ) {
+        if (1) {
             $user = new PasswordModel();
             if ($user->readByProperty('username', $username)) {
                 if ($user->verifyPassword($password)) {

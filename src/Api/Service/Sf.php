@@ -217,6 +217,11 @@ class Sf
         return UserCommands::activate($username, $password, $email, $this->website, $this->app);
     }
 
+    public function user_authenticate($username, $password, $e)
+    {
+        return UserCommands::authenticate($username, $password, $this->app);
+    }
+
     /**
      * Register a new user with password and optionally add them to a project if allowed by permissions
      *
