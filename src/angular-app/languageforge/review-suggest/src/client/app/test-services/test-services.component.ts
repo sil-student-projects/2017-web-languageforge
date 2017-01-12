@@ -20,7 +20,15 @@ export class TestServicesComponent implements OnInit {
     loginAsAdmin() {
         this.loginService.login("admin", "password", "admin@admin.com")
             .subscribe(
-            loginInfo => console.log(this.loginInfo = loginInfo),
+            loginInfo => {
+                this.loginInfo = loginInfo;
+                console.log(this.loginInfo);
+                this.loginService.readProfile()
+                    .subscribe(
+                        userId => console.log(userId),
+                        error => this.errorMessage = <any>error
+                    );
+            },
             error => this.errorMessage = <any>error
             );
     }
