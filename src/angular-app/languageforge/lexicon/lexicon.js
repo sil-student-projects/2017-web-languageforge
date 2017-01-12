@@ -28,7 +28,7 @@ angular.module('lexicon',
     $stateProvider
       .state('configuration', {
         url: '/configuration',
-        templateUrl: '/angular-app/languageforge/lexicon/views/configuration.html'
+        templateUrl: '/angular-app/languageforge/lexicon/views/' + bootstrapVersion + '/configuration.html'
       })
       .state('viewSettings', {
         url: '/viewSettings',
