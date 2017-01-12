@@ -18,9 +18,8 @@ export class LoginService {
 
     let body = {
       'version': '2.0',
-      'method': 'user_activate',
-      'params': [username, password, email],
-      '_remember_me': 'on',
+      'method': 'user_authenticate',
+      'params': [username, password],
       'id': 1
     };
     let headers = new Headers({ 'Content-Type': 'application/json' });
