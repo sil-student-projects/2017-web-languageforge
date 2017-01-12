@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, URLSearchParams } from '@angular/http';
+import { Http, Response, RequestOptions, Headers, RequestMethod } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 // import 'rxjs/add/operator/do';  // for debugging
 
@@ -11,22 +11,29 @@ export class LoginService {
    * @param {Http} http - The injected Http.
    * @constructor
    */
-  constructor(private http: Http) {}
+  constructor(private http: Http) { }
 
-  login(username: string, password: string) {
-    let loginUrl = 'http://languageforge.local/app/login_check';
+  login(username: string, password: string, email: string) {
+    let loginUrl = 'http://languageforge.local/api/sf';
 
-    let body = { '_username': username,
-                 '_password': password };
+    let body = {
+      'version': '2.0',
+      'method': 'user_activate',
+      'params': [username, password, email],
+      'id': 1
+    };
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
 
-    return this.http.post(loginUrl, JSON.stringify(body))
-                    .catch(this.handleError);
+    console.log(JSON.stringify(body));
+    return this.http.post(loginUrl, JSON.stringify(body), options)
+      .catch(this.handleError);
   }
 
   /**
     * Handle HTTP error
     */
-  private handleError (error: any) {
+  private handleError(error: any) {
     // In a real world app, we might use a remote logging infrastructure
     // We'd also dig deeper into the error to get a better message
     let errMsg = (error.message) ? error.message :

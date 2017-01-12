@@ -18,7 +18,7 @@ export class TestServicesComponent implements OnInit {
     }
 
     loginAsAdmin() {
-        this.loginService.login("admin", "password")
+        this.loginService.login("admin", "password", "admin@admin.com")
             .subscribe(
             loginInfo => console.log(this.loginInfo = loginInfo),
             error => this.errorMessage = <any>error
