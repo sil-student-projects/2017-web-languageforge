@@ -12,6 +12,7 @@ export class TestServicesComponent implements OnInit {
 
     errorMessage: string;
     loginInfo: any[] = [];
+    profile: any[] = [];
 
     ngOnInit() {
         this.loginAsAdmin();
@@ -23,13 +24,19 @@ export class TestServicesComponent implements OnInit {
             loginInfo => {
                 this.loginInfo = loginInfo;
                 console.log(this.loginInfo);
-                this.loginService.readProfile()
-                    .subscribe(
-                        userId => console.log(userId),
-                        error => this.errorMessage = <any>error
-                    );
             },
             error => this.errorMessage = <any>error
+            );
+    }
+
+    readProfile(){
+        this.loginService.readProfile()
+            .subscribe(
+                profile => {
+                    this.profile = profile;
+                    console.log(this.profile);
+                },
+                error => this.errorMessage = <any>error 
             );
     }
 }

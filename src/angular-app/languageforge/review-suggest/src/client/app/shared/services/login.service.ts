@@ -30,19 +30,19 @@ export class LoginService {
       .catch(this.handleError);
   }
 
-  readProfile() {
-    let loginUrl = 'http://m.languageforge.local/api/sf';
+  readProfile(){
+    let apiUrl = 'http://m.languageforge.local/api/sf';
 
     let body = {
       'version': '2.0',
       'method': 'user_readProfile',
-      'id': 1
+      'id': 2
     };
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
     console.log(JSON.stringify(body));
-    return this.http.post(loginUrl, JSON.stringify(body), options)
+    return this.http.post(apiUrl, JSON.stringify(body), options)
       .catch(this.handleError);
   }
 
