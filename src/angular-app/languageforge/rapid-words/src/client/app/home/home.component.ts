@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   allEntries: LexEntry[];
   @ViewChild(WordDetailsComponent)
   private detailToggle: WordDetailsComponent;
+  languageSettings: any;
 
   /**
    * Creates an instance of the HomeComponent with the injected
@@ -39,6 +40,7 @@ export class HomeComponent implements OnInit {
     this.getWords();
     this.getNumberOfEntries();
     this.getFullDbeDto(); 
+    this.getLanguageSettings();
   }
 
   getFullDbeDto() {
@@ -60,5 +62,12 @@ export class HomeComponent implements OnInit {
       .subscribe(
       semanticDomains => this.semanticDomains = semanticDomains,
     );
+  }
+
+  getLanguageSettings(){
+    console.log('gettingLanguages')
+    this.lfApiService.getSettings().subscribe( response => {
+      this.languageSettings = response; console.log('settings:',response);
+    });
   }
 }
