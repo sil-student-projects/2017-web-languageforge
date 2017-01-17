@@ -14,30 +14,10 @@
         {% endif %}
     </script>
 
-    {% if useMinifiedJs %}
-
-        {% for filename in vendorFilesMinJs %}
-            <script src="/{{ filename }}"></script>
-        {% endfor %}
-
-        <script src="/js/lib/{{ app.website.base }}.min.js"></script>
-
-    {% else %}
-
-        {% for filename in vendorFilesJs %}
-            <script src="/{{ filename }}"></script>
-        {% endfor %}
-
-        {% for filename in jsFiles %}
-            <script src="/{{ filename }}"></script>
-        {% endfor %}
-
-    {% endif %}
-
     {% if isAngular2 %}
         {% if environment == 'development' %}
             <!-- Development -->
-            <script src="/angular-app/languageforge/rapid-words/node_modules/systemjs/dist/system.src.js"></script>
+            <script src="/angular-app/languageforge/{{ appName }}/node_modules/systemjs/dist/system.src.js"></script>
 
             <script>
                 System.config({
@@ -81,12 +61,32 @@
             </script>
         {% else %}
             <!-- Production -->
-            <script src="/angular-app/languageforge/rapid-words/dist/prod/js/shims.js"></script>
-            <script src="/angular-app/languageforge/rapid-words/dist/prod/js/app.js"></script>
+            <script src="/angular-app/languageforge/{{ appName }}/dist/prod/js/shims.js"></script>
+            <script src="/angular-app/languageforge/{{ appName }}/dist/prod/js/app.js"></script>
         {% endif %}
 
     {% else %}
         {# Angular 1 #}
+        {% if useMinifiedJs %}
+
+            {% for filename in vendorFilesMinJs %}
+                <script src="/{{ filename }}"></script>
+            {% endfor %}
+
+            <script src="/js/lib/{{ app.website.base }}.min.js"></script>
+
+        {% else %}
+
+            {% for filename in vendorFilesJs %}
+                <script src="/{{ filename }}"></script>
+            {% endfor %}
+
+            {% for filename in jsFiles %}
+                <script src="/{{ filename }}"></script>
+            {% endfor %}
+
+        {% endif %}
+
         {% for filename in jsNotMinifiedFiles %}
             <script src="/{{ filename }}"></script>
         {% endfor %}
