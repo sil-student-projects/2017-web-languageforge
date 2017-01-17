@@ -39,6 +39,7 @@ class App extends Base
             $projectId = '';
         }
 
+        $this->data['environment'] = defined('ENVIRONMENT') ? ENVIRONMENT : 'development';
         $this->data['isAngular2'] = $appModel->isAppAngular2();
         $this->data['isBootstrap4'] = $appModel->isBootstrap4;
         $this->data['appName'] = $appName;
