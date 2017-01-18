@@ -10,18 +10,18 @@
 <tabset>
 <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" class="{{interfaceConfig.pullNormal}}" href= "#input">Input Systems</a>
+        <a class="nav-link active" data-toggle="tab" class="{{interfaceConfig.pullNormal}}" href= "#configuration-input">Input Systems</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" class="{{interfaceConfig.pullNormal}}" href="#field">Fields</a>
+        <a class="nav-link" data-toggle="tab" class="{{interfaceConfig.pullNormal}}" href="#configuration-fields">Fields</a>
     </li>
     <li class="nav item">
-            <a class="nav-link" data-toggle="tab" class="{{interfaceConfig.pullNormal}}" href="#option">Option Lists</a>
+            <a class="nav-link" data-toggle="tab" class="{{interfaceConfig.pullNormal}}" href="#configuration-optionlists">Option Lists</a>
         </li>
 </ul>
 <div class="tab-content">
-    <div data-ng-include="'/angular-app/languageforge/lexicon/views/bootstrap4/configuration-input-systems.html'" class="tab-pane" id="input" role="tabpanel"></div>
-    <div data-ng-controller="FieldConfigCtrl" class="tab-pane" id="field" role="tabpanel">
+    <div class="tab-pane" id="configuration-input" role="tabpanel" data-ng-include="'/angular-app/languageforge/lexicon/views/bootstrap4/configuration-input-systems.html'"></div>
+    <div class="tab-pane" id="configuration-fields" role="tabpanel" data-ng-controller="FieldConfigCtrl">
         <div class="row outer-flex">
 
         <!-- Left column: field list -->
@@ -169,7 +169,7 @@ configDirty.entry {{configDirty.entry | json}}
  -->
         </div>
     </div>
-    <div data-ng-controller="OptionListCtrl" class="tab-pane active in" id="option" role="tabpanel">
+    <div class="tab-pane" id="configuration-optionlists" role="tabpanel" data-ng-controller="OptionListCtrl">
  <div class="row outer-flex">
 
         <!-- Left column: task list -->
