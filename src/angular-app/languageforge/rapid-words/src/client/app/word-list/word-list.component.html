@@ -1,7 +1,7 @@
 <div class="w-75">
     <div class="card word-list-container">
         <div class="list-group-item rw-group-item" 
-        *ngFor="let entry of getEntriesForPage()" 
+        *ngFor="let entry of entriesForPage"
         (click)="selectEntry(entry)"
         [ngClass]="{'selected': entry == selectedEntry}">
             <div class="list-item-primary">{{getPreviewWord(entry)}}</div>

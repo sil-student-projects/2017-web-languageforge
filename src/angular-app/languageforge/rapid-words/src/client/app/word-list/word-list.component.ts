@@ -1,8 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core'
-import { Http } from '@angular/http';
+import {Component, OnChanges, Input, Output, EventEmitter} from '@angular/core'
+import {LexEntry} from '../shared/models/lex-entry';
 
-import { LfApiService } from '../shared/services/lf-api.service';
-import { LexEntry } from '../shared/models/lex-entry';
+const ENTRIES_PER_PAGE: number = 50;
 
 @Component({
     moduleId: module.id,
@@ -10,24 +9,30 @@ import { LexEntry } from '../shared/models/lex-entry';
     templateUrl: 'word-list.component.html',
     styleUrls: ['word-list.component.css']
 })
-
-export class WordListComponent {
+export class WordListComponent implements OnChanges {
     @Input() entries: LexEntry[];
     @Input() wordLanguages: string[];
     @Input() definitionLanguages: string[];
     @Output() onEntrySelected = new EventEmitter<LexEntry>();
     currentPage: number;
     selectedEntry: LexEntry;
+    entriesForPage: LexEntry[] = [];
 
     constructor() {
         this.currentPage = 1;
     }
 
-    getEntriesForPage() {
+    ngOnChanges() {
+        this.repaginate();
+    }
+
+    repaginate() {
         if (this.entries) {
-            return this.entries.slice((this.currentPage - 1) * 50, this.currentPage * 50);
+            this.entriesForPage = this.entries
+                .slice((this.currentPage - 1) * ENTRIES_PER_PAGE, this.currentPage * ENTRIES_PER_PAGE);
+        } else {
+            this.entriesForPage = [];
         }
-        return null;
     }
 
     incrementCurrentPage() {

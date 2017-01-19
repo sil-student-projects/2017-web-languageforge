@@ -1,11 +1,9 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Http } from '@angular/http';
-import { NameListService } from '../shared/name-list/name-list.service';
-import { SemanticDomain } from '../shared/models/semantic-domain.model';
-import { LfApiService } from '../shared/services/lf-api.service';
-import { WordDetailsComponent } from '../word-details/word-details.component';
-import { Constants } from '../shared/constants';
-import { LexEntry } from '../shared/models/lex-entry';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {SemanticDomain} from '../shared/models/semantic-domain.model';
+import {LfApiService} from '../shared/services/lf-api.service';
+import {WordDetailsComponent} from '../word-details/word-details.component';
+import {LexEntry} from '../shared/models/lex-entry';
+import {WordListComponent} from "../word-list/word-list.component";
 
 @Component({
     moduleId: module.id,
@@ -18,11 +16,11 @@ export class HomeComponent implements OnInit {
     words: any[] = [];
     wordLanguageSettings: string[] = [];
     definitionLanguageSettings: string[] = [];
-
     allEntries: LexEntry[];
-    @ViewChild(WordDetailsComponent)
-    private detailToggle: WordDetailsComponent;
     selectedEntry = new LexEntry();
+
+    @ViewChild(WordDetailsComponent) private wordDetailsComponent: WordDetailsComponent;
+    @ViewChild(WordListComponent) private wordListComponent: WordListComponent;
 
     /**
      * Creates an instance of the HomeComponent with the injected
@@ -32,21 +30,22 @@ export class HomeComponent implements OnInit {
      * @param {SemanticDomainListService} semanticDomainListService
      */
 
-    constructor(private lfApiService: LfApiService) { }
-    multitextShowDetails() {
-        this.detailToggle.toggleShowDetails();
+    constructor(private lfApiService: LfApiService) {
     }
 
     ngOnInit() {
         this.getNumberOfEntries();
-        this.getFullDbeDto(); 
+        this.getFullDbeDto();
         this.getSettings();
+    }
+
+    multitextShowDetails() {
+        this.wordDetailsComponent.toggleShowDetails();
     }
 
     getFullDbeDto() {
         this.lfApiService.getFullDbeDto().subscribe(response => {
             this.allEntries = LexEntry.mapEntriesResponse(response.data.entries);
-            
         });
     }
 
@@ -61,7 +60,7 @@ export class HomeComponent implements OnInit {
     extractLanguagesFromJSON(inputSystems: any) {
         var languageList: string[] = [];
         for (var i in inputSystems) {
-            var language :string = inputSystems[i];
+            var language: string = inputSystems[i];
             languageList.push(language);
         }
         return languageList;
@@ -82,5 +81,10 @@ export class HomeComponent implements OnInit {
      */
     onEntrySelectedInList(entry: LexEntry) {
         this.selectedEntry = entry;
+    }
+
+    onEntryAdded(entry: LexEntry) {
+        this.allEntries.push(entry);
+        this.wordListComponent.repaginate();
     }
 }

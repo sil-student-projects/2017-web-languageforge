@@ -1,51 +1,48 @@
-import { Component, OnInit, ViewChildren, QueryList, Input } from '@angular/core';
-import { MultitextComponent } from '../multitext/multitext.component';
-import { LexEntry } from '../shared/models/lex-entry';
-import { LfApiService } from '../shared/services/lf-api.service';
-import { Constants } from '../shared/constants';
+import {Component, ViewChildren, QueryList, Input, Output, EventEmitter} from '@angular/core';
+import {MultitextComponent} from '../multitext/multitext.component';
+import {LexEntry} from '../shared/models/lex-entry';
+import {LfApiService} from '../shared/services/lf-api.service';
 
 @Component({
-  moduleId: module.id,
-  selector: 'worddetails',
-  templateUrl: 'word-details.component.html',
-  styleUrls: ['word-details.component.css'],
+    moduleId: module.id,
+    selector: 'worddetails',
+    templateUrl: 'word-details.component.html',
+    styleUrls: ['word-details.component.css'],
 })
+export class WordDetailsComponent {
+    @Input() public wordMultitextLanguages: string[] = [];
+    @Input() public definitionMultitextLanguages: string[] = [];
+    @Input() selectedEntry: LexEntry;
+    @Output() onEntryAdded = new EventEmitter<LexEntry>();
 
-export class WordDetailsComponent implements OnInit {
+    @ViewChildren(MultitextComponent) multitextBoxes: QueryList<MultitextComponent>;
 
-  @Input('wordMultitextLanguages') public wordMultitextLanguages: string[] = [];
-  @Input('definitionMultitextLanguages') public definitionMultitextLanguages: string[] = [];
-  @Input('selectedEntry') selectedEntry: LexEntry;
+    showDetails: Boolean = false;
+    detailLabels: any[] = ["Citation Form", "Pronunciation", "CV Pattern", "Tone"];
+    id = "";
 
-  @ViewChildren(MultitextComponent) multitextBoxes: QueryList<MultitextComponent>;
-
-  showDetails: Boolean=false;
-  detailLabels: any[] = ["Citation Form", "Pronunciation", "CV Pattern", "Tone"];
-  id=""
-  constructor( private lfApiService: LfApiService) {
-   }
-
-  ngOnInit() {}
-  toggleShowDetails() {
-    if (this.showDetails){
-      this.showDetails=false;
+    constructor(private lfApiService: LfApiService) {
     }
-    else{
-      this.showDetails=true;
+
+    toggleShowDetails() {
+        this.showDetails = !this.showDetails;
     }
-  }
 
-  sendEntry() {
-    this.lfApiService.addEntry(this.constructLexEntryFromMultitexts()).subscribe( response => {
-    });
-  }
+    addEntry() {
+        let lexEntry = this.constructLexEntryFromMultitexts();
+        this.onEntryAdded.emit(lexEntry);
+        console.log(`addEntry ${lexEntry}`);
+        this.lfApiService
+            .addEntry(lexEntry)
+            .subscribe(response => {});
+    }
 
-  constructLexEntryFromMultitexts() {
-    var lexEntry = new LexEntry();
-    this.multitextBoxes.forEach( multitextBox => {
-      multitextBox.addLexemeOrSenseToLexEntry(lexEntry);
-    });
+    constructLexEntryFromMultitexts(): LexEntry {
+        var lexEntry = new LexEntry();
+        this.multitextBoxes.forEach(multitextBox => {
+            multitextBox.addLexemeOrSenseToLexEntry(lexEntry);
+        });
 
-    return lexEntry;
-  }
+        return lexEntry;
+    }
 }

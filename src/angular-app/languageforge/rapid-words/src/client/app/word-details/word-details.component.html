@@ -1,16 +1,18 @@
 <div class="col-12">
     <div class="card" style="  background-color: #f8fafa; margin:10px;">
-        <multitext label="Word" [selectedEntry]="selectedEntry" [languages]="wordMultitextLanguages" [content]="['','']"></multitext>
+        <multitext label="Word" [selectedEntry]="selectedEntry" [languages]="wordMultitextLanguages"
+                   [content]="['','']"></multitext>
     </div>
     <div class="card" style="background-color: #f8fafa; margin:10px;">
-        <multitext label="Meaning" [selectedEntry]="selectedEntry" [languages]="definitionMultitextLanguages" [content]="['','','']"></multitext>
+        <multitext label="Meaning" [selectedEntry]="selectedEntry" [languages]="definitionMultitextLanguages"
+                   [content]="['','','']"></multitext>
     </div>
-<!--Replace the above arrays with arrays of languages obtained from the back end
-    (get the settings from the back end and extract the settings about languages for definitions and lexemes-->
+    <!--Replace the above arrays with arrays of languages obtained from the back end
+        (get the settings from the back end and extract the settings about languages for definitions and lexemes-->
     <div *ngIf="showDetails">
         <div *ngFor="let detailLabel of detailLabels">
             <multitext [label]=detailLabel></multitext>
         </div>
     </div>
 </div>
-<button type="button" class="btn btn-primary btn-sm" (click)="sendEntry()">Add</button>
+<button type="button" class="btn btn-primary btn-sm" (click)="addEntry()">Add</button>

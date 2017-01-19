@@ -34,7 +34,7 @@ export class LexSense {
     }
 
     static mapSensesResponse(senses: any[]) {
-        var arrayOfLexSenses: any = [];
+        let arrayOfLexSenses: any = [];
         if (senses) {
             for (let sense of senses) {
                 arrayOfLexSenses.push(new LexSense(sense));
@@ -84,7 +84,7 @@ export class LexEntry {
     }
 
     static mapEntriesResponse(entries: any[]) {
-        var arrayOfLexEntries: any = [];
+        let arrayOfLexEntries: any = [];
         for (let entry of entries) {
             arrayOfLexEntries.push(new LexEntry(entry));
         }
