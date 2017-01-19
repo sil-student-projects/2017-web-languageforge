@@ -217,6 +217,12 @@ class Sf
         return UserCommands::activate($username, $password, $email, $this->website, $this->app);
     }
 
+    // public function user_authenticate($username, $password)
+    // - This should exist but symfony routing and session management bedazzled us
+    // - See commit b5550599793a73e8a29d058477bdbb365eed75ba for a proxied but broken version
+    //   (no easy way to bind new phpsessid to rememberme token that is bound to a proxied phpsessid)
+    // - Commit dcb565a91b9ff0d3e7c96bc0cb5802f9599d13f8 overrides existing behavior of /app/login_check to return JSON
+
     /**
      * Register a new user with password and optionally add them to a project if allowed by permissions
      *
@@ -455,6 +461,11 @@ class Sf
         return ProjectSettingsDto::encode($this->projectId, $this->userId);
     }
 
+    public function project_settings_by_id($projectId)
+    {
+        return ProjectSettingsDto::encode($projectId, $this->userId);
+    }
+
     /**
      * Updates the ProjectSettingsModel which are settings accessible only to site administrators
      * @param SmsSettings[] $smsSettingsArray
@@ -664,6 +675,15 @@ class Sf
         return LexDbeDto::encode($this->projectId, $this->userId, null, $offset);
     }
 
+    public function lex_dbeDtoFull_by_id($projectId)
+    {
+        $sessionLabel = 'lexDbeFetch_' . 1;
+        $this->app['session']->set($sessionLabel, time());
+
+        $this->app['session']->set('projectId', $projectId);
+        return LexDbeDto::encode($projectId, $this->userId, null, 0);
+    }
+
     public function lex_dbeDtoUpdatesOnly($browserId, $lastFetchTime = null)
     {
         $sessionLabel = 'lexDbeFetch_' . $browserId;
@@ -687,6 +707,10 @@ class Sf
             LexOptionListCommands::updateList($this->projectId, $optionlist);
         }
         return true;
+    }
+
+    public function lex_configuration_read() {
+        return LexProjectCommands::readConfig($this->projectId);
     }
 
     public function lex_project_removeMediaFile($mediaType, $fileName)

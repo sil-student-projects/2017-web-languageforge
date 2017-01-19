@@ -169,7 +169,7 @@ $app['security.role_hierarchy'] = array(
     'ROLE_SITE_project_creator' => array('ROLE_user', 'ROLE_ALLOWED_TO_SWITCH'),
 );
 $app['security.access_rules'] = array(
-    array('^/app', 'ROLE_user'),
+    array('^/app(?!\/review-suggest)', 'ROLE_user'),
     array('^/upload', 'ROLE_user'),
     array('^/script', 'ROLE_system_admin'),
 );
@@ -182,6 +182,9 @@ $app['security.authentication.success_handler.site'] = $app->share(function() us
         'default_target_path' => '/app',
         'login_path' => '/auth/login',
     ), 'site');
+});
+$app['security.authentication.failure_handler.site'] = $app->share(function() use ($app) {
+    return new \Site\Handler\AuthenticationFailureHandler($app['kernel'], $app['security.http_utils']);
 });
 $app['security.authentication.logout_handler.site'] = $app->share(function() use ($app) {
     return new \Site\Handler\LogoutSuccessHandler($app['security.http_utils'], '/', $app['session']);

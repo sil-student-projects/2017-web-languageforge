@@ -1,0 +1,47 @@
+.word-list-container {
+    margin-top: 5pt;
+    height: 400pt;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-bottom: 0px;
+}
+
+.word-block div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rw-group-item {
+    display: block;
+}
+
+.rw-group-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.list-item-primary {
+    z-index: 2;
+    font-size: 1.0em;
+    font-weight: bold;
+    overflow: hidden;
+}
+
+.list-item-secondary {
+    z-index: 2;
+    font-size: 0.8em;
+    overflow: hidden;
+}
+
+.wl-pagination {
+    display: inline-block;
+    margin-top: 0px;
+}
+
+.page-button:not(.disabled) {
+    color: #0275d8;
+}
+
+.rw-group-item.selected {
+    background-color: rgba(0, 0, 0, 0.15);
+}

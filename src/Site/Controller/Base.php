@@ -36,7 +36,7 @@ class Base
         $this->data['vendorFilesJs'] = array();
         $this->data['vendorFilesMinJs'] = array();
         $this->data['isBootstrap4'] = false;
-
+        $this->data['isAngular2'] = false;
     }
 
     /** @var array data used to render templates */
@@ -83,9 +83,8 @@ class Base
     protected function renderPage(Application $app, $viewName) {
 
         if ($this->data['isBootstrap4']) {
-            $this->addCssFiles($this->getThemePath()."/cssBootstrap4", false);
-            array_unshift($this->data['cssFiles'], "vendor_bower/bootstrap/dist/css/bootstrap.css");
-            array_unshift($this->data['cssFiles'], "vendor_bower/bootstrap/dist/css/bootstrap-flex.css");
+            // TODO: move to app_dependencies once bootstrap4 migration is complete
+            $this->addCssFiles($this->getThemePath()."/cssBootstrap4", array(), false);
         } else {
             $this->addCssFiles($this->getThemePath()."/cssBootstrap2", array(), false);
             $this->addCssFiles("Site/views/shared/cssBootstrap2", array('bootstrap.css'), false);
@@ -93,15 +92,21 @@ class Base
         }
 
         // Add general Angular app dependencies
-        $dependencies = $this->getAngularAppDependencies();
-        foreach ($dependencies["js"] as $dependencyFilePath) {
-            $this->data['vendorFilesJs'][] = $dependencyFilePath;
-        }
-        foreach ($dependencies["min"] as $dependencyFilePath) {
-            $this->data['vendorFilesMinJs'][] = $dependencyFilePath;
-        }
-        foreach ($dependencies["css"] as $dependencyFilePath) {
-            $this->data['vendorFilesCss'][] = $dependencyFilePath;
+        if (!$this->data['isAngular2']) {
+            $dependencies = $this->getAngularAppDependencies();
+            foreach ($dependencies["js"] as $dependencyFilePath) {
+                $this->data['vendorFilesJs'][] = $dependencyFilePath;
+            }
+            foreach ($dependencies["min"] as $dependencyFilePath) {
+                $this->data['vendorFilesMinJs'][] = $dependencyFilePath;
+            }
+            foreach ($dependencies["css"] as $dependencyFilePath) {
+                $this->data['vendorFilesCss'][] = $dependencyFilePath;
+            }
+        } else {
+                $this->data['vendorFilesJs'] = array();
+                $this->data['vendorFilesMinJs'] = array();
+                $this->data['vendorFilesCss'] = array();
         }
 
         $this->populateHeaderMenuViewdata();
@@ -229,6 +234,7 @@ class Base
      * @return array
      */
     protected function getAngularAppDependencies() {
+        /* TODO: This is an Angular1 function; rename appropriately. */
         $jsonData = json_decode(file_get_contents(APPPATH . "app_dependencies.json"), true);
         $jsFilesToReturn = array();
         $jsMinFilesToReturn = array();

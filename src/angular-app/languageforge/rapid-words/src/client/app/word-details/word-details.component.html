@@ -1,0 +1,16 @@
+<div class="col-12">
+    <div class="card">
+        <multitext label="Word" [selectedEntry]="selectedEntry" [languages]="wordMultitextLanguages" [content]="['','']"></multitext>
+    </div>
+    <div class="card">
+        <multitext label="Meaning" [selectedEntry]="selectedEntry" [languages]="definitionMultitextLanguages" [content]="['','','']"></multitext>
+    </div>
+    <div *ngIf="showDetails">
+        <div *ngFor="let detailLabel of detailLabels">
+            <multitext [label]=detailLabel></multitext>
+        </div>
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary btn-sm float-right" (click)="sendEntry()">Add Word</button>
+    </div>
+</div>
