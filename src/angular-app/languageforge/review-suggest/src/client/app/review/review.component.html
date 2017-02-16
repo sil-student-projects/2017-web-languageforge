@@ -19,8 +19,13 @@
           </span>
         </h4>
         <!-- Label of the currentWord's ID for development purposes -->
-        <label class="active" for="testWord">Word: {{currentWord.id}}</label>
+        <label class="active" for="testWord">Word: {{currentWord.id}} currentIdx = {{currentIdx + 1}} / {{words.length}}</label>
       </div>
+      
+      <div class="progress"> 
+        <div class="determinate deep-purple" [style.width]="progressPercent"></div>
+      </div>
+
 
       <div class="card-action center">
 

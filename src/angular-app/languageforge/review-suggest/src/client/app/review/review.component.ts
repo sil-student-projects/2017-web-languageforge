@@ -14,6 +14,8 @@ declare var Materialize: any;
 })
 export class ReviewComponent implements OnInit, OnDestroy {
 
+  public progressPercent: string;
+
   private id: string;
   private sub: any;
   private words: any[];
@@ -49,7 +51,12 @@ export class ReviewComponent implements OnInit, OnDestroy {
       this.words = response.entries;
       this.currentWord = this.words[this.currentIdx];
       this.currentLanguageCode = Object.keys(this.currentWord.lexeme)[0];
+      this.getProgressPercent();
     });
+  }
+
+  public getProgressPercent(){
+    this.progressPercent = ((((this.currentIdx + 1)/this.words.length)*100).toString()).concat("%") ;
   }
 
   public incrementWord = () => {
@@ -99,6 +106,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
         Materialize.toast(toastContentFailed, 1000, 'red');
       }
       this.isClicked = false;
+      this.getProgressPercent();
     });
   }
 
