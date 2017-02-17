@@ -959,4 +959,13 @@ class Sf
         }
         $this->app['session']->set('last_activity', $newtime);
     }
+
+    // -------------------------------- Review & Suggest Api ----------------------------------
+
+    public function test_call(){
+        return "test success";
+    }
+
+
+
 }

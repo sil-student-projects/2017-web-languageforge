@@ -343,7 +343,13 @@ class RightsHelper
             // xforge frame
             case 'xforge_frame_can_show_page_help_button':
                 return true;
-            
+
+            // review & suggest
+            case 'test_call':
+                return $this->userHasProjectRight(Domain::PROJECTS + Operation::VIEW );
+
+
+
             default:
                 throw new \Exception("API method '$methodName' has no security policy defined in RightsHelper::userCanAccessMethod()");
         }
