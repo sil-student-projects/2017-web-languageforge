@@ -962,8 +962,15 @@ class Sf
 
     // -------------------------------- Review & Suggest Api ----------------------------------
 
-    public function test_call(){
-        return "test success";
+    public function rs_get_words($numWords = 64){
+        $words = array();
+
+        for($i = 0; $i < $numWords; $i++){
+            $wordName = "Test Word ".$i;
+            $wordDef = "Test Def ".$i;
+            $words[$wordName] = $wordDef;
+        }
+        return $words;
     }
 
 

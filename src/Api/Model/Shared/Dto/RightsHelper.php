@@ -290,7 +290,8 @@ class RightsHelper
             case 'lex_dbeDtoUpdatesOnly':
                 return $this->userHasProjectRight(Domain::ENTRIES + Operation::VIEW);
 
-            // case 'lex_entry_read':
+            case 'lex_entry_read':
+                return $this->userHasProjectRight(Domain::ENTRIES + Operation::VIEW);
             case 'lex_entry_update':
                 return $this->userHasProjectRight(Domain::ENTRIES + Operation::EDIT);
 
@@ -345,7 +346,7 @@ class RightsHelper
                 return true;
 
             // review & suggest
-            case 'test_call':
+            case 'rs_get_words':
                 return $this->userHasProjectRight(Domain::PROJECTS + Operation::VIEW );
 
 
