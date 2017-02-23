@@ -1,19 +1,36 @@
 <div class="container">
-	<h3>My Projects</h3>
-	<div class="container">
-
-		<div class="card">
-			<div class="card-content">
-				<span class="card-title">Select Project</span>
-				<div class="row">
-					<div class="col-12">
-						<ul class="collection">
-							<li *ngFor="let project of projects">
-								<a (click)="onSelect(project)" class="collection-item" style="cursor: pointer;">{{project.projectName}}</a>
-							</li>
-						</ul>
-					</div>
+	<h3 class="center-align">Dashboard</h3>
+	<div class="card">
+		<div class="card-content">
+			<span class="card-title">Select Project</span>
+			<div class="row">
+				<div class="col-12">
+					<ul class="collection">
+						<li *ngFor="let project of projects">
+							<a (click)="onSelect(project)" class="collection-item" style="cursor: pointer;">{{project.projectName}}</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
+	<a *ngIf="!showProjects" (click)="showAllProjects(true)" class="btn waves-effect waves-light deep-purple"><i class="material-icons left">list</i>Show All Projects</a>
+	<a *ngIf="showProjects" (click)="showAllProjects(false)" class="btn waves-effect waves-light deep-purple"><i class="material-icons left">list</i>Hide All Projects</a>
+	<div *ngIf="showProjects" class="card">
+		<div class="card-content">
+			<span class="card-title">Join Project</span>
+			<div class="row">
+				<div class="col-12">
+					<ul class="collection">
+						<li *ngFor="let project of projects">
+							<a (click)="onSelect(project)" class="collection-item" style="cursor: pointer;">
+								{{project.projectName}}
+								<i class="material-icons secondary-content">add</i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

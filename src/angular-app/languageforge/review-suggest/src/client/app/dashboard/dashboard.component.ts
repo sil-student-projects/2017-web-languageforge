@@ -11,7 +11,8 @@ import { ProjectService } from '../shared/services/project.service';
 
 export class DashboardComponent {
 
-  private projects: any[];
+  projects: any[];
+  showProjects: boolean = false;
 
   constructor(private projectService: ProjectService, 
               private router: Router) { }
@@ -29,5 +30,9 @@ export class DashboardComponent {
   onSelect(project: any) {
     this.projectService.setProjectId(project.id);
     this.router.navigate(['/review', project.id]);
+  }
+
+  showAllProjects(showProjects: boolean) {
+    this.showProjects = showProjects;
   }
 }
