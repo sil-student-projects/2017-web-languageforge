@@ -16,7 +16,7 @@ export class DashboardComponent {
 
   private projects: any[];
 
-  constructor(private projectService: ProjectService, 
+  constructor(private projectService: ProjectService,
               private router: Router) { }
 
   ngOnInit() {
