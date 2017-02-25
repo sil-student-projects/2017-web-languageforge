@@ -106,6 +106,12 @@ export class LfApiService {
         });
     }
 
+    project_list_dto() {
+        return this.callApi('project_list_dto').map(result => {
+            return result;
+        });
+    }
+
     project_read_by_id(projectId: string) {
         return this.callApi('project_read', [projectId]).map(result =>{
             return result;
