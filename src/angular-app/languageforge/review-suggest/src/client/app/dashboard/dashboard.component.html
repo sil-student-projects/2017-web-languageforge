@@ -19,10 +19,15 @@
 	<div *ngIf="showProjects" class="card">
 		<div class="card-content">
 			<span class="card-title">Join Project</span>
+			<div class="input-field">
+				<i class="material-icons prefix">search</i>
+				<input [(ngModel)]="filterText" id="icon_prefix" type="text">
+				<label for="icon_prefix">Search</label>
+			</div>
 			<div class="row">
 				<div class="col-12">
-					<ul class="collection">
-						<li *ngFor="let project of allProjects">
+					<ul *ngIf="allProjects" class="collection">
+						<li *ngFor="let project of allProjects | projectNameFilter:filterText">
 							<a (click)="joinProject(project)" class="collection-item" style="cursor: pointer;">
 								{{project.projectName}}
 								<i class="material-icons secondary-content">add</i>

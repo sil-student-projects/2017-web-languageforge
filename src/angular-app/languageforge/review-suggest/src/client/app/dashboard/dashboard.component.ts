@@ -17,6 +17,7 @@ export class DashboardComponent {
   joinedProjects: any[];
   allProjects: any[];
   showProjects: boolean = false;
+  filterText: string = '';
 
   constructor(private projectService: ProjectService, 
               private router: Router) { }
