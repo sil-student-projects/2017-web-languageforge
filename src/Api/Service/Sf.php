@@ -45,6 +45,7 @@ use Api\Model\Shared\Dto\ProjectListDto;
 use Api\Model\Shared\Dto\ProjectManagementDto;
 use Api\Model\Shared\Dto\RightsHelper;
 use Api\Model\Shared\Dto\UserProfileDto;
+use Api\Model\Shared\Mapper\JsonDecoder;
 use Api\Model\Shared\Mapper\JsonEncoder;
 use Api\Model\Shared\ProjectModel;
 use Api\Model\Shared\UserListModel;
@@ -973,6 +974,17 @@ class Sf
         return $words;
     }
 
+    public function get_word_def($wordID, $projectID = null){
+        if($projectID == null) $projectID = $this->projectId;
+
+        $word = LexEntryCommands::readEntry($projectID, $wordID);
+        $defs = array();
+        foreach ($word["senses"] as $sence){
+            array_push($defs,$sence["definition"]["en"]["value"]);
+        }
+
+        return array($word["lexeme"]["th"]["value"] => $defs);
+    }
 
 
 }

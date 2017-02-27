@@ -347,6 +347,7 @@ class RightsHelper
 
             // review & suggest
             case 'rs_get_words':
+            case 'get_word_def':
                 return $this->userHasProjectRight(Domain::PROJECTS + Operation::VIEW );
 
 
