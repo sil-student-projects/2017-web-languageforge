@@ -14,7 +14,7 @@ import { AuthService } from '../shared/services/auth.service';
 })
 export class RegisterComponent implements OnInit {
 
-  private currentUser: User = new User();
+  private registerUser: User = new User();
   private authForm: NgModel;
   @ViewChild('registerForm') currentForm: NgModel;
 
@@ -30,21 +30,12 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    this.authService.login(this.currentUser.username, this.currentUser.password).subscribe(response => {
+    this.authService.register(this.registerUser.email, this.registerUser.username, this.registerUser.password).subscribe(response => {
       if (response) {
         this.goToDashboard();
       } else {
-
-        // try a second time, if there is no PHPSESSID cookie the first request will fail but set it
-        this.authService.login(this.currentUser.username, this.currentUser.password).subscribe(response2 => {
-          console.log(response2);
-          if (response2) {
-            this.goToDashboard();
-          } else {
-            var toastContent = '<span><b>Invalid email or password!</b></span>';
-            Materialize.toast(toastContent, 5000, 'red');
-          }
-        });
+        var toastContent = '<b>Error!</b>';
+        Materialize.toast(toastContent, 5000, 'red');
       }
     });
   }

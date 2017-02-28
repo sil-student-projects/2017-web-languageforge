@@ -11,6 +11,11 @@ export class AuthService {
     this.loggedIn = !!localStorage.getItem('auth_token');
   }
 
+  //Change register function later to do what we want!
+  register(email: string, username: string, password: string) {
+    return this.lfApiService.user_create(email, username, password);
+  }
+
   login(username: string, password: string) {
     return this.lfApiService.user_authenticate(username, password).map(response => {
       if (response.success) {
