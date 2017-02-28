@@ -85,6 +85,15 @@ export class ReviewComponent implements OnInit, OnDestroy {
     this.modalActions.emit({ action: "modal", params: ['close'] });
   }
 
+  public settingsModalActions = new EventEmitter<string | MaterializeAction>();
+  openSettings() {
+    this.settingsModalActions.emit({ action: "modal", params: ['open'] });
+  }
+
+  closeModal1() {
+    this.settingsModalActions.emit({ action: "modal", params: ['close'] });
+  }
+
   sendComment(comment: string, id: string){
     this.isClicked = true;
     this.commentService.sendComment(comment, id).subscribe(response => {
