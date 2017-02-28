@@ -163,6 +163,8 @@ class RightsHelper
             case 'project_settings_by_id':
             case 'project_updateSettings':
             case 'project_readSettings':
+            case 'project_getLanguage':
+            case 'project_getDefinitionLanguages':
                 return $this->userHasProjectRight(Domain::PROJECTS + Operation::EDIT);
 
             case 'project_update':
@@ -347,7 +349,7 @@ class RightsHelper
 
             // review & suggest
             case 'rs_get_words':
-            case 'get_word_def':
+            case 'rs_get_word_def':
                 return $this->userHasProjectRight(Domain::PROJECTS + Operation::VIEW );
 
 

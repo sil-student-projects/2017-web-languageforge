@@ -370,6 +370,18 @@ class Sf
         return ProjectCommands::getJoinRequests($this->projectId);
     }
 
+    public function project_getLanguage()
+    {
+        $p = ProjectCommands::readProject($this->projectId);
+        return $p['languageCode'];
+    }
+
+    public function project_getDefinitionLanguages()
+    {
+        $p = ProjectCommands::readProject($this->projectId);
+        return $p['config']['entry']['fields']['senses']['fields']['definition']['inputSystems'];
+    }
+
     /**
      * Clear out the session projectId and permanently delete selected list of projects.
      *
@@ -964,26 +976,39 @@ class Sf
     // -------------------------------- Review & Suggest Api ----------------------------------
 
     public function rs_get_words($numWords = 64){
+
+        //$wordIDs = array('58add4731d41c829fd41d1b2', '58add4631d41c829fb3c64f3','58add42d1d41c829fc67b322','58add44e1d41c82e43601462','58addbb91d41c82e3f30a224');
         $words = array();
+
 
         for($i = 0; $i < $numWords; $i++){
             $wordName = "Test Word ".$i;
             $wordDef = "Test Def ".$i;
             $words[$wordName] = $wordDef;
         }
+        /*
+        foreach ($wordIDs as $wordId){
+            array_push($words,$this->rs_get_word_def($wordId));
+        }*/
         return $words;
     }
 
-    public function get_word_def($wordID, $projectID = null){
+    public function rs_get_word_def($wordID, $projectID = null){
         if($projectID == null) $projectID = $this->projectId;
 
         $word = LexEntryCommands::readEntry($projectID, $wordID);
+        $wordLang = $this->project_getLanguage();
+        $defLangs = $this->project_getDefinitionLanguages();
         $defs = array();
         foreach ($word["senses"] as $sence){
-            array_push($defs,$sence["definition"]["en"]["value"]);
+            $langs = array();
+            foreach ($defLangs as $def){
+                $langs[$def] = $sence["definition"][$def]["value"];
+            }
+            array_push($defs,$langs);
         }
 
-        return array($word["lexeme"]["th"]["value"] => $defs);
+        return array($word["lexeme"][$wordLang]["value"] => $defs);
     }
 
 
