@@ -51,6 +51,12 @@ export class ProjectService {
     return !!this.projectId;
   }
 
+  joinProject(projectId: string) {
+    return this.lfApiService.project_joinProject(projectId, "contributer").map(response => {
+      return response.data;
+    });
+  }
+
   getJoinedProjectList() {
     return this.lfApiService.project_list_dto().map(response => {
       if (response.success) {
@@ -69,8 +75,8 @@ export class ProjectService {
     });
   }
 
-  getWordList(id: string) {
-    return this.lfApiService.lex_dbeDtoFull_by_id(id).map(response => {
+  getWordList(projectId: string) {
+    return this.lfApiService.lex_dbeDtoFull_by_id(projectId).map(response => {
       if (response.success) {
         this.data.set('current_project_words', response.data.entries);
       }

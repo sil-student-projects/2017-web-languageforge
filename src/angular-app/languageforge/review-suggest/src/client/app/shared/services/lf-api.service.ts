@@ -112,6 +112,10 @@ export class LfApiService {
         });
     }
 
+    project_joinProject(projectId: string, userRole: string) {
+        return this.callApi('project_joinProject', [projectId, userRole]);
+    }
+
     project_read_by_id(projectId: string) {
         return this.callApi('project_read', [projectId]).map(result =>{
             return result;

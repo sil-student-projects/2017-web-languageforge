@@ -28,6 +28,7 @@ export class DashboardComponent {
 
   getJoinedProjects() {
     this.projectService.getJoinedProjectList().subscribe(projects => {
+      console.log(projects);
       this.joinedProjects = projects.entries;
     });
   }
@@ -44,12 +45,17 @@ export class DashboardComponent {
   }
 
   joinProject(project: any) {
-    // TODO: Call service endpoind to join the project in the backend
     if (this.isProjectJoined(project)) {
-      Materialize.toast("<b>You have already joined this project!", 2000, 'red');
+      Materialize.toast("<b>You have already joined this project!</b>", 2000, 'red');
     } else {
-      this.joinedProjects.push(project);
-      Materialize.toast("<b>Project joined!", 2000, 'green');
+      this.projectService.joinProject(project.id).subscribe(response => {
+        if (response.success) {
+          this.joinedProjects.push(project);
+          Materialize.toast("<b>Project joined!</b>", 2000, 'green');
+        } else {
+          Materialize.toast("<b>Error while joining project.</b>", 2000, 'red');
+        }
+      })
     }
   }
 
