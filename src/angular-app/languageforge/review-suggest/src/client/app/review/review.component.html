@@ -1,14 +1,19 @@
 <div class="container">
   <!-- REVIEW Inline style CP 2017-01 -->
-  <h2 style="font-size: 2.5em;">{{ currentProjectName }}</h2>
+  <div class="row">
+    <h2 style="font-size: 2.5em;">{{ currentProjectName }}</h2>
+  </div>
   <div class="card">
     <div *ngIf="currentWord == null" class="card-content">
       <div class="progress orange">
-        <div class="indeterminate purple"></div>
+        <div class="indeterminate deep-purple"></div>
       </div>
     </div>
     <div *ngIf="currentWord" class="card-content">
-
+      <div class="row">
+          <button (click)="openSettings()" class="btn-large deep-purple darken-1 waves-effect waves-light col s2 offset-s9"><i class="material-icons">settings</i></button>
+      </div>
+      <div class="divider"></div>
       <span *ngIf="currentWord.lexeme[currentLanguageCode]" class="card-title">
         <h3><b>{{currentWord.lexeme[currentLanguageCode].value}}</b></h3>
       </span>
@@ -61,6 +66,65 @@
   </div>
   <div class="modal-footer">
     <span style="font-size:1.6em;"><a class="btn blue darken-1 waves-effect waves-light" (click)="submitComment()">Post <i class="material-icons">send</i></a></span>
+</div>
+</div>
+
+
+<div id="settingsModal" class="modal sheet modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: true}]" [materializeActions]="settingsModalActions">
+  <div class="modal-content">
+    <div class="row darken-1">
+      <div class="col s6 offset-s6 right-align">
+        <a class="btn-flat darken-1 waves-light waves-effect" (click)="closeModal1()"><i class="material-icons">close</i></a>
+      </div>
+    </div>
+    <div class="row">
+      <h3 class="center-align">Settings</h3>
+    </div>
+    <div class="row">
+    <div class="container">
+      <div class="row">
+        <form action="#">
+          <div class="row">
+          <h5 class="left-align"> Number of Cards</h5>
+          <div class="divider"></div>
+          <p>
+            <input name="group1" type="radio" id="test1" />
+            <label for="test1">25</label>
+          </p>
+          <p>
+            <input name="group1" type="radio" id="test2" />
+            <label for="test2">50</label>
+          </p>
+          <p>
+            <input  name="group1" type="radio" id="test3"  />
+            <label for="test3">75</label>
+          </p>
+          <p>
+            <input name="group1" type="radio" id="test4"  />
+            <label for="test4">100</label>
+          </p>
+          </div>
+          <div class="row">
+          <h5 class="left-align">Additional Settings</h5>
+          <div class="divider"></div>
+          
+          <p>
+            <input type="checkbox" id="test5" />
+            <label for="test5">Progress Bar</label>
+          </p>
+          <p>
+            <input type="checkbox" id="test6" />
+            <label for="test6">Card Counter</label>
+          </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+  
+  <div class="modal-footer">
+    <span style="font-size:1.6em;"><a class="btn blue darken-1 waves-effect waves-light" (click)="closeModal1()"><i class="material-icons">save</i></a></span>
 </div>
 </div>
 
