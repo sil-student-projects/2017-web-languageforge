@@ -30,11 +30,13 @@
       <div class="card-action center">
 
         <div class="row">
-          <button (click)="upVote()" [disabled]="isClicked" class="btn-large green darken-1 waves-effect waves-light col s4"><i class="large material-icons">thumb_up</i></button>
+          <button (click)="upVote()" [disabled]="isClicked" class="btn-large green darken-1 waves-effect waves-light col s3"><i class="large material-icons">thumb_up</i></button>
 
-          <button (click)="openModal()" [disabled]="isClicked" class="btn-large blue darken-1 waves-effect waves-light col s4"><i class="material-icons">message</i></button>
+          <button (click)="openModal()" [disabled]="isClicked" class="btn-large blue darken-1 waves-effect waves-light col s3"><i class="material-icons">message</i></button>
 
-          <button (click)="downVote()" [disabled]="isClicked" class="btn-large red darken-1 waves-effect waves-light col s4"><i class="material-icons">thumb_down</i></button>
+          <button (click)="incrementWord()" [disabled]="isClicked" class="btn-large orange darken-1 waves-effect waves-light col s3"><i class="material-icons">trending_flat</i></button>
+
+          <button (click)="downVote()" [disabled]="isClicked" class="btn-large red darken-1 waves-effect waves-light col s3"><i class="material-icons">thumb_down</i></button>
         </div>
         <!-- END .row -->
       </div>
