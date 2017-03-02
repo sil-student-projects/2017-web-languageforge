@@ -29,6 +29,10 @@ export class AuthComponent implements OnInit {
     }
   }
 
+  goToDashboard() {
+    this.router.navigate(['dashboard']);
+  }
+
   onSubmit() {
     this.authService.login(this.currentUser.username, this.currentUser.password).subscribe(response => {
       if (response) {
@@ -47,9 +51,5 @@ export class AuthComponent implements OnInit {
         });
       }
     });
-  }
-
-  goToDashboard() {
-    this.router.navigate(['dashboard']);
   }
 }

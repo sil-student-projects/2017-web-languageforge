@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private router: Router,
     public authService: AuthService
-  ) { }
+  ) { } 
 
   ngOnInit(): void {
     if (this.authService.isLoggedIn()) {
@@ -29,18 +29,28 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-    this.authService.register(this.registerUser.email, this.registerUser.username, this.registerUser.password).subscribe(response => {
-      if (response) {
-        this.goToDashboard();
-      } else {
-        var toastContent = '<b>Error!</b>';
-        Materialize.toast(toastContent, 5000, 'red');
-      }
-    });
+  goToDashboard() {
+      this.router.navigate(['dashboard']);
   }
 
-  goToDashboard() {
-    this.router.navigate(['dashboard']);
-  }
+  onSubmit() {
+
+    //MY TEST CODE
+    if(this.registerUser.password == this.registerUser.confPass) {
+
+        this.authService.register(this.registerUser.email, this.registerUser.username, this.registerUser.password).subscribe(response => {
+            if (response) {
+                this.goToDashboard();
+            } else {
+                var toastContent = '<b>Error!</b>';
+                Materialize.toast(toastContent, 5000, 'red');
+                this.goToDashboard(); //this line is just here for testing if the onSubmit func is matching passwords properly
+              }
+            });
+
+    } else {
+        var toastContent = '<b>Error! Passwords do NOT match!</b>';
+      }
+    }
+
 }
