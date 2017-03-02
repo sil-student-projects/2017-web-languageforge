@@ -15,6 +15,9 @@ declare const Materialize: any;
 export class ReviewComponent implements OnInit, OnDestroy {
 
   public progressPercent: string;
+  public settingLogic = [1, 1, 1];
+  public settingDOMHandler = ['checked','checked','checked'];
+
 
   id: string;
   sub: any;
@@ -38,6 +41,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
     });
   }
 
+/** The following is the word and project logic */
   getProjectSettings() {
     this.projectService.getSelectedProjectSettings().subscribe(response => {
       if (response.success) {
@@ -51,6 +55,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
     });
   }
 
+/** Gets the "dictionary" object */
   getWords() {
     this.projectService.getSelectedProjectWordList().subscribe(response => {
       if (response.success) {
@@ -98,7 +103,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
   downVote() {
     this.sendComment('I downvoted this word through the Review & Suggest app', this.currentWord.id);
   }
-
+/** Modal Actions for the settings and comment modals. Actions and Actions1 separate to avoid both modals opening */
   modalActions: EventEmitter<string | MaterializeAction> = new EventEmitter<string | MaterializeAction>();
   openModal() {
     this.modalActions.emit({ action: "modal", params: ['open'] });
@@ -107,6 +112,15 @@ export class ReviewComponent implements OnInit, OnDestroy {
   closeModal() {
     this.modalActions.emit({ action: "modal", params: ['close'] });
   }
+
+  modalActions1: EventEmitter<string | MaterializeAction> = new EventEmitter<string | MaterializeAction>();
+  openSettings() {
+    this.modalActions1.emit({ action: "modal", params: ['open'] });
+  }
+
+  closeSettings() {
+    this.modalActions1.emit({ action: "modal", params: ['close'] });
+  }  
 
   sendComment(comment: string, id: string) {
     this.isClicked = true;

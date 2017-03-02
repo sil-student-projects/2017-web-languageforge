@@ -8,7 +8,9 @@
       </div>
     </div>
     <div *ngIf="currentWord" class="card-content">
-
+      <div class="row">
+        <button (click)="openSettings()" class="btn-large deep-purple darken-1 waves-effect waves-light col s3 offset-s8"><i class="material-icons">settings</i>  </button>
+      </div>
       <span *ngIf="currentWord.lexeme[currentLanguageCode]" class="card-title">
         <h3><b>{{currentWord.lexeme[currentLanguageCode].value}}</b></h3>
       </span>
@@ -67,6 +69,56 @@
   </div>
   <div class="modal-footer">
     <span style="font-size:1.6em;"><a class="btn blue darken-1 waves-effect waves-light" (click)="submitComment()">Post <i class="material-icons">send</i></a></span>
+  </div>
+</div>
+
+<div id="settingsModal" class="modal sheet " materialize="modal" [materializeParams]="[{dismissible: true}]" [materializeActions]="modalActions1">
+  <div class="modal-content">
+    <div class="row darken-1">
+      <div class="col s6">
+        <h4 class="left-align">Settings </h4>
+      </div>
+    </div>
+    <div class="row center">
+      <form action="#">
+        <h5>Number of Cards in Deck</h5>
+        <div class="divider"></div>
+        <p>
+          <input name="group1" type="radio" id="test1" />
+          <label for="test1">25</label>
+        </p>
+        <p>
+          <input name="group1" type="radio" id="test2" />
+          <label for="test2">50</label>
+        </p>
+        <p>
+          <input name="group1" type="radio" id="test3" />
+          <label for="test3">75</label>
+        </p>
+        <p>
+          <input name="group1" type="radio" id="test4" />
+          <label for="test4">100</label>
+        </p>
+        
+        <h5 class="center-align">Additional Settings</h5>
+        <div class="divider"></div>
+        <p>
+          <input type="checkbox" id="test5" ([checked])=settingDOMHandler[0] />
+          <label for="test5">Progress Bar</label>
+        </p>
+        <p>
+          <input type="checkbox" id="test6" ([checked])=settingDOMHandler[1]/>
+          <label for="test6">Index Position</label>
+        </p>
+        <p>
+          <input type="checkbox" id="test7" ([checked])=settingDOMHandler[2]/>
+          <label for="test7">Word ID</label>
+        </p>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <span style="font-size:1.6em;"><a class="btn blue darken-1 waves-effect waves-light" (click)="closeSettings()"> <i class="material-icons">save</i></a></span>
   </div>
 </div>
 
