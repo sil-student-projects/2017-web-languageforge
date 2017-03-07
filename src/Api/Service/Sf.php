@@ -18,6 +18,8 @@ use Api\Model\Languageforge\Lexicon\Command\SendReceiveCommands;
 use Api\Model\Languageforge\Lexicon\Dto\LexBaseViewDto;
 use Api\Model\Languageforge\Lexicon\Dto\LexDbeDto;
 use Api\Model\Languageforge\Lexicon\Dto\LexProjectDto;
+use Api\Model\Languageforge\Lexicon\LexProjectModel;
+use Api\Model\Languageforge\Lexicon\LexCommentListModel;
 use Api\Model\Languageforge\Semdomtrans\Command\SemDomTransItemCommands;
 use Api\Model\Languageforge\Semdomtrans\Command\SemDomTransProjectCommands;
 use Api\Model\Languageforge\Semdomtrans\Command\SemDomTransWorkingSetCommands;
@@ -670,7 +672,7 @@ class Sf
         return LexProjectCommands::updateProject($this->projectId, $this->userId, $settings);
     }
 
-    public function lex_baseViewDto()
+    public function lex_baseView()
     {
         return LexBaseViewDto::encode($this->projectId, $this->userId);
     }
@@ -774,6 +776,23 @@ class Sf
     public function lex_comment_updateStatus($commentId, $status)
     {
         return LexCommentCommands::updateCommentStatus($this->projectId, $commentId, $status);
+    }
+
+    public function lex_comment_getByWord($wordId)
+    {
+        $project = new LexProjectModel($this->projectId);
+
+        $commentsModel = new LexCommentListModel($project, null);
+        $commentsModel->readAsModels();
+
+        $comments = array();
+
+        foreach($commentsModel->entries as $entry){
+            if($entry->entryRef->id == $wordId){
+                $comments[$entry->id->id]=$entry->content;
+            }
+        }
+        return $comments;
     }
 
     public function lex_optionlists_update($params)
@@ -993,10 +1012,9 @@ class Sf
         return $words;
     }
 
-    public function rs_get_word_def($wordID, $projectID = null){
-        if($projectID == null) $projectID = $this->projectId;
+    public function rs_get_word_def($wordID){
 
-        $word = LexEntryCommands::readEntry($projectID, $wordID);
+        $word = LexEntryCommands::readEntry($this->projectId, $wordID);
         $wordLang = $this->project_getLanguage();
         $defLangs = $this->project_getDefinitionLanguages();
         $defs = array();
@@ -1011,5 +1029,25 @@ class Sf
         return array($word["lexeme"][$wordLang]["value"] => $defs);
     }
 
+    public function rs_upvote($wordID){
+        return $this->rs_vote($wordID,"This word is correct.");
+    }
+    public function rs_downvote($wordID){
+        return $this->rs_vote($wordID,"This word is not correct.");
+    }
+    private function rs_vote($wordID,$commentText){
+        $commentID = null;
+        $comments = $this->lex_comment_getByWord($wordID);
+        foreach($comments as $id => $text){
+            if($text == $commentText) $commentID = $id;
+        }
+
+        if($commentID == null){
+            $data = array("id"=>"","content"=>$commentText,"entryRef"=>$wordID);
+            return $this->lex_comment_update($data);
+        }else{
+            return $this->lex_comment_plusOne($commentID);
+        }
+    }
 
 }

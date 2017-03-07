@@ -312,6 +312,7 @@ class RightsHelper
                 return $this->userHasProjectRight(Domain::COMMENTS + Operation::EDIT);
 
             case 'lex_comment_plusOne':
+            case 'lex_comment_getByWord':
                 return $this->userHasProjectRight(Domain::COMMENTS + Operation::VIEW);
 
             case 'lex_optionlist_update':
@@ -351,7 +352,9 @@ class RightsHelper
             case 'rs_get_words':
             case 'rs_get_word_def':
                 return $this->userHasProjectRight(Domain::PROJECTS + Operation::VIEW );
-
+            case 'rs_upvote':
+            case 'rs_downvote':
+            return $this->userHasProjectRight(Domain::PROJECTS + Operation::EDIT );
 
 
             default:
