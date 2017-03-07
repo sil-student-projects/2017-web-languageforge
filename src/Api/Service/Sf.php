@@ -445,6 +445,11 @@ class Sf
         return ProjectCommands::removeUsers($this->projectId, $userIds);
     }
 
+    public function project_removeUserFromProject()
+    {
+        return ProjectCommands::removeUserFromProject($this->projectId, $this->userId);
+    }
+
     /**
      * Read a project from the given $id
      *

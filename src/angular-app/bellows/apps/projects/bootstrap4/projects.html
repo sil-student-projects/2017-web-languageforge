@@ -41,6 +41,9 @@
                                 <br />
                                 <small class="muted">{{projectTypeNames[project.appName]}}</small>
                             </ul>
+                            <ul>
+                                <button class="btn" data-ng-show="isInProject(project)" data-ng-click="removeUserFromProject(project)"><i class="icon-remove-sign"></i>Remove me from this Project</button>
+                            </ul>
                             <ul data-ng-show="rights.edit" style="width: 20%">
                                 <button class="btn btn-secondary" data-ng-show="!isManager(project)" data-ng-click="addManagerToProject(project)"><i class="icon-plus"></i>Add me as Manager</button>
                                 <button class="btn btn-secondary" data-ng-show="!isInProject(project)" data-ng-click="addMemberToProject(project)"><i class="icon-plus"></i>Add me as Contributor</button>

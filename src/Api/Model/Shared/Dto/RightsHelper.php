@@ -343,6 +343,9 @@ class RightsHelper
             // xforge frame
             case 'xforge_frame_can_show_page_help_button':
                 return true;
+
+            case 'project_removeUserFromProject':
+                return $this->userHasSystemRight(Domain::USERS + Operation::EDIT);
             
             default:
                 throw new \Exception("API method '$methodName' has no security policy defined in RightsHelper::userCanAccessMethod()");

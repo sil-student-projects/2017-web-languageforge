@@ -280,6 +280,22 @@ class ProjectCommands
         $project->removeUserJoinRequest($joinRequestId);
         return $project->write();
     }
+
+    public static function removeUserFromProject($projectId, $userId)
+    {
+        $project = new ProjectModel($projectId);
+        if ($userId != $project->ownerRef->id) {
+            $user = new UserModel($userId);
+            $project->removeUser($user->id->asString());
+            $user->removeProject($project->id->asString());
+            $project->write();
+            $user->write();
+        } else {
+            throw new \Exception("Cannot remove project owner");
+        }
+
+        return $projectId;
+    }
     
     public static function grantAccessForUserRequest($projectId, $userId, $projectRole) {
         // check if userId exists in request queue on project model
@@ -292,8 +308,6 @@ class ProjectCommands
         // add userId to request queue
         // send email to project owner and all managers
     }
-    
-    
 
     public static function renameProject($projectId, $oldName, $newName)
     {
