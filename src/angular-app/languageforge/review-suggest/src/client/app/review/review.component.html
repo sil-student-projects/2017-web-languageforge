@@ -1,6 +1,6 @@
 <div class="container">
   <!-- REVIEW Inline style CP 2017-01 -->
-  <h2 style="font-size: 2.5em;">{{ currentProjectName }}</h2>
+  <h2 *ngIf="projectSettings" style="font-size: 2.5em;">{{ projectSettings.projectName }}</h2>
   <div class="card">
     <div *ngIf="currentWord == null" class="card-content">
       <div class="progress orange">
@@ -19,17 +19,24 @@
           </span>
         </h4>
         <!-- Label of the currentWord's ID for development purposes -->
-        <label class="active" for="testWord">Word: {{currentWord.id}}</label>
+        <label class="active" for="testWord">Word: {{currentWord.id}} currentWordIdx = {{currentWordIdx + 1}} / {{words.length}}</label>
       </div>
+
+      <div class="progress">
+        <div class="determinate deep-purple" [style.width]="progressPercent"></div>
+      </div>
+
 
       <div class="card-action center">
 
         <div class="row">
-          <button (click)="upVote()" [disabled]="isClicked" class="btn-large green darken-1 waves-effect waves-light col s4"><i class="large material-icons">thumb_up</i></button>
+          <button (click)="upVote()" [disabled]="isClicked" class="btn-large green darken-1 waves-effect waves-light col s3"><i class="large material-icons">thumb_up</i></button>
 
-          <button (click)="openModal()" [disabled]="isClicked" class="btn-large blue darken-1 waves-effect waves-light col s4"><i class="material-icons">message</i></button>
+          <button (click)="openModal()" [disabled]="isClicked" class="btn-large blue darken-1 waves-effect waves-light col s3"><i class="material-icons">message</i></button>
 
-          <button (click)="downVote()" [disabled]="isClicked" class="btn-large red darken-1 waves-effect waves-light col s4"><i class="material-icons">thumb_down</i></button>
+          <button (click)="incrementWord()" [disabled]="isClicked" class="btn-large orange darken-1 waves-effect waves-light col s3"><i class="material-icons">trending_flat</i></button>
+
+          <button (click)="downVote()" [disabled]="isClicked" class="btn-large red darken-1 waves-effect waves-light col s3"><i class="material-icons">thumb_down</i></button>
         </div>
         <!-- END .row -->
       </div>
@@ -42,20 +49,24 @@
 
 </div>
 
-<div id="commentModal" class="modal sheet modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: true}]" [materializeActions]="modalActions">
+<div id="commentModal" class="modal sheet " materialize="modal" [materializeParams]="[{dismissible: true}]" [materializeActions]="modalActions">
   <div class="modal-content">
     <div class="row darken-1">
       <div class="col s6">
-        <h4 class="left-align">Suggestion </h4> 
+        <h4 class="left-align">Suggestion </h4>
       </div>
       <div class="col s6 right-align">
         <a class="btn-flat darken-1 waves-light waves-effect" (click)="closeModal()"><i class="material-icons">close</i></a>
       </div>
     </div>
-    <textarea id="placeholderForComment" class="materialize-textarea" placeholder="Enter text here"></textarea>
+    <div class="row">
+      <div class="col s12">
+        <textarea [(ngModel)]="textComment" class="materialize-textarea" placeholder="Enter text here"></textarea>
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
     <span style="font-size:1.6em;"><a class="btn blue darken-1 waves-effect waves-light" (click)="submitComment()">Post <i class="material-icons">send</i></a></span>
-</div>
+  </div>
 </div>
 

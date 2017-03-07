@@ -19,7 +19,7 @@ export class DashboardComponent {
   showProjects: boolean = false;
   filterText: string = '';
 
-  constructor(private projectService: ProjectService, 
+  constructor(private projectService: ProjectService,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -28,14 +28,17 @@ export class DashboardComponent {
 
   getJoinedProjects() {
     this.projectService.getJoinedProjectList().subscribe(projects => {
-      console.log(projects);
-      this.joinedProjects = projects.entries;
+      this.joinedProjects = projects.data.entries;
+    }, error => {
+      this.handleError(error);
     });
   }
 
   getAllProjects() {
     this.projectService.getAllProjectList().subscribe(projects => {
       this.allProjects = projects.entries;
+    }, error => {
+      this.handleError(error);
     });
   }
 
@@ -73,5 +76,10 @@ export class DashboardComponent {
       this.getAllProjects();
     }
     this.showProjects = showProjects;
+  }
+
+  handleError(error: any) {
+    let toastContentFailed = '<b>Error! ' + error.statusText + '</b>';
+    Materialize.toast(toastContentFailed, 1000, 'red');
   }
 }

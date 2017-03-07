@@ -2,11 +2,17 @@ import { Injectable } from '@angular/core';
 
 import { LfApiService } from './lf-api.service';
 
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs/Observable';
+
 @Injectable()
 
 export class ProjectService {
   private projectId: string = null;
+  private projectList: any = null;
   private projectSettings: any = null;
+  private projectWordList: any = null;
 
   private data = {
     set: function(key: any, value: any) {
@@ -33,14 +39,13 @@ export class ProjectService {
   constructor(private lfApiService: LfApiService) {
     this.projectId = this.data.get('current_project_id');
     this.projectSettings = this.data.get('current_project_settings');
+    this.projectWordList = this.data.get('current_project_words');
+    this.projectList = this.data.get('current_project_list');
   }
 
   setProjectId(projectId: string) {
     this.data.set('current_project_id', projectId);
     this.projectId = projectId;
-    this.getProjectSettings(projectId).subscribe(response => {
-      this.projectSettings = response;
-    })
   }
 
   getProjectId() {
@@ -60,9 +65,15 @@ export class ProjectService {
   getJoinedProjectList() {
     return this.lfApiService.project_list_dto().map(response => {
       if (response.success) {
-        this.data.set('current_project_list', response.data.entries);
+        this.data.set('current_project_list', response.data);
+        this.projectList = response.data;
+      } else {
+        if (this.projectList != null) {
+          response.data = this.projectList;
+          response.success = true;
+        }
       }
-      return response.data;
+      return response;
     });
   }
 
@@ -75,25 +86,47 @@ export class ProjectService {
     });
   }
 
-  getWordList(projectId: string) {
+  getSelectedProjectWordList() {
+    return this.getProjectWordList(this.projectId).map(response => {
+      if (!response.success) {
+        if (this.projectWordList != null) {
+          response.data = this.projectWordList;
+          response.success = true;
+        }
+      }
+      return response;
+    });
+  }
+
+  private getProjectWordList(projectId: string) {
     return this.lfApiService.lex_dbeDtoFull_by_id(projectId).map(response => {
       if (response.success) {
-        this.data.set('current_project_words', response.data.entries);
+        this.data.set('current_project_words', response.data);
+        this.projectWordList = response.data;
       }
-      return response.data;
+      return response;
     });
   }
   
   getSelectedProjectSettings() {
-    return this.projectSettings;
+    return this.getProjectSettings(this.projectId).map(response => {
+      if (!response.success) {
+        if (this.projectSettings != null) {
+          response.data = this.projectSettings;
+          response.success = true;
+        }
+      }
+      return response;
+    });
   }
 
   private getProjectSettings(projectId: string) {
     return this.lfApiService.project_read_by_id(projectId).map(response => {
       if (response.success) {
         this.data.set('current_project_settings', response.data);
+        this.projectSettings = response.data;
       }
-      return response.data;
+      return response;
     });
   }
 

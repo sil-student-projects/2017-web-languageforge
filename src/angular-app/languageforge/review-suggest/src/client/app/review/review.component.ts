@@ -5,7 +5,7 @@ import { ProjectService } from '../shared/services/project.service';
 import { CommentService } from '../shared/services/comment.service';
 
 import { MaterializeDirective, MaterializeAction } from 'angular2-materialize';
-declare var Materialize: any;
+declare const Materialize: any;
 
 @Component({
   moduleId: module.id,
@@ -14,69 +14,92 @@ declare var Materialize: any;
 })
 export class ReviewComponent implements OnInit, OnDestroy {
 
-  private id: string;
-  private sub: any;
-  private words: any[];
-  private currentWord: any;
-  private currentLanguageCode: string;
-  private currentInterfaceLanguageCode: string;
-  private currentIdx = 0;
-  private currentProjectName: string;
+  public progressPercent: string;
 
-  private isClicked = false;
+  id: string;
+  sub: any;
+  words: any[];
+  currentWord: any;
+  projectSettings: any;
+  currentLanguageCode: string;
+  currentWordIdx: number = 0;
+  isClicked: boolean = false;
+  textComment: string;
 
   constructor(private route: ActivatedRoute,
               private projectService: ProjectService,
               private commentService: CommentService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
-      this.setLanguageSettings();
-      this.getWords(this.id);
+      this.getProjectSettings();
+      this.getWords();
     });
   }
 
-  setLanguageSettings() {
-    let projectSettings = this.projectService.getSelectedProjectSettings();
-    this.currentLanguageCode = projectSettings.languageCode;
-    this.currentInterfaceLanguageCode = projectSettings.interfaceLanguageCode;
-    this.currentProjectName = projectSettings.projectName;
-  }
-
-  getWords(projectId: string) {
-    this.projectService.getWordList(projectId).subscribe(response => {
-      this.words = response.entries;
-      this.currentWord = this.words[this.currentIdx];
-      this.currentLanguageCode = Object.keys(this.currentWord.lexeme)[0];
+  getProjectSettings() {
+    this.projectService.getSelectedProjectSettings().subscribe(response => {
+      if (response.success) {
+        this.projectSettings = response.data;
+      } else {
+        let toastContentFailed = '<b>Failed to get project settings! ' + response.message + '</b>';
+        Materialize.toast(toastContentFailed, 2000, 'red');
+      }
+    }, error => {
+      this.handleError(error);
     });
   }
 
-  public incrementWord = () => {
-    this.currentIdx += 1;
-    if (this.currentIdx > this.words.length - 1) {
-      this.currentIdx = 0;
-    }
-    this.currentWord = this.words[this.currentIdx]
+  getWords() {
+    this.projectService.getSelectedProjectWordList().subscribe(response => {
+      if (response.success) {
+        this.words = response.data.entries;
+        this.updateCurrentWord();
+      } else {
+        let toastContentFailed = '<b>Failed to get words! ' + response.message + '</b>';
+        Materialize.toast(toastContentFailed, 2000, 'red');
+      }
+    }, error => {
+      this.handleError(error);
+    });
   }
 
-  public decreaementWord = () => {
-    this.currentIdx -= 1;
-    if (this.currentIdx < 0) {
-      this.currentIdx = this.words.length - 1;
+  incrementWord() {
+    this.currentWordIdx += 1;
+    if (this.currentWordIdx > this.words.length - 1) {
+      this.currentWordIdx = 0;
     }
-    this.currentWord = this.words[this.currentIdx];
+    this.updateCurrentWord();
   }
 
-  public upVote = () => {
+  decreaementWord() {
+    this.currentWordIdx -= 1;
+    if (this.currentWordIdx < 0) {
+      this.currentWordIdx = this.words.length - 1;
+    }
+    this.updateCurrentWord();
+  }
+
+  updateCurrentWord() {
+    this.currentWord = this.words[this.currentWordIdx];
+    this.currentLanguageCode = Object.keys(this.currentWord.lexeme)[0];
+    this.getProgressPercent();
+  }
+
+  public getProgressPercent(){
+    this.progressPercent = ((((this.currentWordIdx + 1)/this.words.length)*100).toString()).concat("%") ;
+  }
+
+  upVote() {
     this.sendComment('I upvoted this word through the Review & Suggest app', this.currentWord.id);
   }
 
-  public downVote = () => {
+  downVote() {
     this.sendComment('I downvoted this word through the Review & Suggest app', this.currentWord.id);
   }
 
-  public modalActions = new EventEmitter<string | MaterializeAction>();
+  modalActions: EventEmitter<string | MaterializeAction> = new EventEmitter<string | MaterializeAction>();
   openModal() {
     this.modalActions.emit({ action: "modal", params: ['open'] });
   }
@@ -85,28 +108,35 @@ export class ReviewComponent implements OnInit, OnDestroy {
     this.modalActions.emit({ action: "modal", params: ['close'] });
   }
 
-  sendComment(comment: string, id: string){
+  sendComment(comment: string, id: string) {
     this.isClicked = true;
     this.commentService.sendComment(comment, id).subscribe(response => {
       let success = response;
       if (success) {
-        let toastContentSuccess = '<span><b>Your response has been sent!</b></span>';
-        Materialize.toast(toastContentSuccess, 1000, 'green');
+        let toastContentSuccess = '<b>Your response has been sent!</b>';
+        Materialize.toast(toastContentSuccess, 2000, 'green');
         this.incrementWord();
       }
       else {
-        let toastContentFailed = '<span><b>Your response failed to send!</b></span>';
-        Materialize.toast(toastContentFailed, 1000, 'red');
+        let toastContentFailed = '<b>Your response failed to send!</b>';
+        Materialize.toast(toastContentFailed, 2000, 'red');
       }
       this.isClicked = false;
+      this.getProgressPercent();
+    }, error => {
+      this.handleError(error);
     });
   }
 
   submitComment() {
-    var inputValue = (<HTMLInputElement>document.getElementById("placeholderForComment")).value;
+    this.sendComment(this.textComment, this.currentWord.id);
+    this.textComment = null;
     this.closeModal();
-    (<HTMLInputElement>document.getElementById("placeholderForComment")).value = '';
-    this.sendComment(inputValue, this.currentWord.id);
+  }
+
+  handleError(error: any) {
+    let toastContentFailed = '<b>Error! ' + error.statusText + '</b>';
+    Materialize.toast(toastContentFailed, 2000, 'red');
   }
 
   ngOnDestroy() {
