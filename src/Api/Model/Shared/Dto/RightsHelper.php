@@ -173,7 +173,7 @@ class RightsHelper
                 return $this->userHasProjectRight(Domain::PROJECTS + Operation::EDIT);
 
             case 'project_joinProject':
-                return $this->userHasSiteRight(Domain::PROJECTS + Operation::VIEW_OWN);
+                return $this->userHasSiteRight(Domain::PROJECTS + Operation::EDIT);
 
             case 'project_usersDto':
                 return $this->userHasProjectRight(Domain::USERS + Operation::VIEW);
@@ -229,7 +229,7 @@ class RightsHelper
                 return $this->userHasSiteRight(Domain::PROJECTS + Operation::ARCHIVE);
 
             case 'project_list':
-                return $this->userHasSiteRight(Domain::PROJECTS + Operation::VIEW_OWN);
+                return $this->userHasSiteRight(Domain::PROJECTS + Operation::VIEW);
 
             case 'project_create':
             case 'project_create_switchSession':

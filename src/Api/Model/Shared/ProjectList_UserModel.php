@@ -29,11 +29,11 @@ class ProjectList_UserModel extends MapperListModel
     public function readAll($isArchivedList = false)
     {
         if ($isArchivedList) {
-            $query = array('isArchived' => true);
+            $query = array('siteName' => array('$in' => array($this->_site)), 'isArchived' => true);
         } else {
-            $query = array('isArchived' => array('$ne' => true));
+            $query = array('siteName' => array('$in' => array($this->_site)), 'isArchived' => array('$ne' => true));
         }
-        $fields = array('projectName', 'appName', 'ownerRef');
+        $fields = array('projectName', 'appName', 'siteName', 'ownerRef');
 
         $this->_mapper->readList($this, $query, $fields);
     }
@@ -44,8 +44,8 @@ class ProjectList_UserModel extends MapperListModel
      */
     public function readUserProjects($userId)
     {
-        $query = array('users.' . $userId => array('$exists' => true), 'isArchived' => array('$ne' => true));
-        $fields = array('projectName', 'appName', 'ownerRef');
+        $query = array('users.' . $userId => array('$exists' => true), 'siteName' => array('$in' => array($this->_site)), 'isArchived' => array('$ne' => true));
+        $fields = array('projectName', 'appName', 'siteName', 'ownerRef');
 
         $this->_mapper->readList($this, $query, $fields);
 

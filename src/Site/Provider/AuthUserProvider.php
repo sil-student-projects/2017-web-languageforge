@@ -45,9 +45,7 @@ class AuthUserProvider implements UserProviderInterface
             $sisterSiteMap = array(
                 'scriptureforge.org' => 'languageforge.org',
                 'scriptureforge.local' => 'languageforge.local',
-                'dev.scriptureforge.org' => 'dev.languageforge.org',
-                'languageforge.local' => 'm.languageforge.local',
-                'languageforge.org' => 'm.languageroge.org'
+                'dev.scriptureforge.org' => 'dev.languageforge.org'
             );
             $sisterSiteMap = array_merge($sisterSiteMap, array_flip($sisterSiteMap));
             if (array_key_exists($this->website->domain, $sisterSiteMap)) {
