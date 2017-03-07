@@ -38,18 +38,21 @@ export class RegisterComponent implements OnInit {
     //MY TEST CODE
     if(this.registerUser.password == this.registerUser.confPass) {
 
+        var toastContent = '<b>Success! Passwords match</b>';
+        Materialize.toast(toastContent, 5000, 'green');
+
         this.authService.register(this.registerUser.email, this.registerUser.username, this.registerUser.password).subscribe(response => {
             if (response) {
-                this.goToDashboard();
+                this.goToDashboard(); //maybe change this to swap you to log in page later
             } else {
                 var toastContent = '<b>Error!</b>';
                 Materialize.toast(toastContent, 5000, 'red');
-                this.goToDashboard(); //this line is just here for testing if the onSubmit func is matching passwords properly
               }
             });
 
     } else {
         var toastContent = '<b>Error! Passwords do NOT match!</b>';
+        Materialize.toast(toastContent, 5000, 'red');
       }
     }
 
