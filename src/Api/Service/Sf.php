@@ -995,21 +995,18 @@ class Sf
     // -------------------------------- Review & Suggest Api ----------------------------------
 
     public function rs_get_words($numWords = 64){
+        $LexEntries = LexEntryCommands::listEntries($this->projectId);
+        $word_list = [];
+        foreach ($LexEntries->entries as $word){
+            $word_list[$word["id"]] = $this->rs_get_word_def($word["id"]);
+        };
 
-        //$wordIDs = array('58add4731d41c829fd41d1b2', '58add4631d41c829fb3c64f3','58add42d1d41c829fc67b322','58add44e1d41c82e43601462','58addbb91d41c82e3f30a224');
-        $words = array();
+        while (count($word_list) > $numWords){
+            $rand_key = array_rand($word_list);
+            unset($word_list[$rand_key]);
+        };
 
-
-        for($i = 0; $i < $numWords; $i++){
-            $wordName = "Test Word ".$i;
-            $wordDef = "Test Def ".$i;
-            $words[$wordName] = $wordDef;
-        }
-        /*
-        foreach ($wordIDs as $wordId){
-            array_push($words,$this->rs_get_word_def($wordId));
-        }*/
-        return $words;
+        return $word_list;
     }
 
     public function rs_get_word_def($wordID){
@@ -1025,8 +1022,7 @@ class Sf
             }
             array_push($defs,$langs);
         }
-
-        return array($word["lexeme"][$wordLang]["value"] => $defs);
+        return array(array_pop($word["lexeme"])["value"] => $defs);
     }
 
     public function rs_upvote($wordID){
