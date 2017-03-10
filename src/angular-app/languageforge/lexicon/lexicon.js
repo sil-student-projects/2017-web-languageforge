@@ -26,9 +26,17 @@ angular.module('lexicon',
 
     // State machine from ui.router
     $stateProvider
-      .state('configuration', {
-        url: '/configuration',
-        templateUrl: '/angular-app/languageforge/lexicon/views/configuration.html'
+      .state('configuration-input', {
+        url: '/configuration-input',
+        templateUrl: '/angular-app/languageforge/lexicon/views/' + bootstrapVersion + '/configuration.html'
+      })
+      .state('configuration-fields', {
+        url: '/configuration-fields',
+        templateUrl: '/angular-app/languageforge/lexicon/views/' + bootstrapVersion + '/configuration.html'
+      })
+      .state('configuration-optionlists', {
+        url: '/configuration-optionlists',
+        templateUrl: '/angular-app/languageforge/lexicon/views/' + bootstrapVersion + '/configuration.html'
       })
       .state('viewSettings', {
         url: '/viewSettings',

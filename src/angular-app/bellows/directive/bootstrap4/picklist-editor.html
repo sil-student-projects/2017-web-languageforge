@@ -6,16 +6,16 @@
         </select>
     </div>
     <div>
-        <input data-ng-model="newValue" data-on-enter="pickAddItem()" name="newValue" type="text" placeholder="new value" no-dirty-check />
-        <a data-ng-click="pickAddItem()"><i class="icon-plus"></i></a>
+        <input class="form-control col-xs-4" data-ng-model="newValue" data-on-enter="pickAddItem()" name="newValue" type="text" placeholder="new value" no-dirty-check />
+        <a data-ng-click="pickAddItem()"><i class="fa fa-plus" aria-hidden="true"></i></a>
     </div>
     <div sv-root sv-part="items">
-        <div data-ng-repeat="item in items" class="picklist-group" sv-element>
-            <a data-ng-show="showRemove($index)" data-ng-click="pickRemoveItem($index)"><i class="icon-remove"></i></a>
+        <div class="col-xs-12" data-ng-repeat="item in items" class="picklist-group" sv-element>
+            <a data-ng-show="showRemove($index)" data-ng-click="pickRemoveItem($index)"><i class="fa fa-times" aria-hidden="true"></i></a>
             <span data-ng-hide="showRemove($index)" style="padding-left: 15px">&nbsp;</span>
-            <input type="text" data-ng-model="item.value" data-on-enter="blur(thisElement)" class="picklist-row"></input>
-            <input disabled type="text" data-ng-model="item.value" class="picklist-row" sv-placeholder></input>
-            <i class="icon-align-justify" sv-handle></i><!-- In Font Awesome 4 we would use fa-bars instead -->
+            <input type="text" data-ng-model="item.value" data-on-enter="blur(thisElement)" class="picklist-row"/>
+            <input disabled type="text" data-ng-model="item.value" class="picklist-row" sv-placeholder/>
+            <i class="fa fa-align-justify" aria-hidden="true" sv-handle></i>
         </div>
     </div>
 </div>
