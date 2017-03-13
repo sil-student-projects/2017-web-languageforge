@@ -17,7 +17,8 @@ export class ReviewComponent implements OnInit, OnDestroy {
   public progressPercent: string;
   public settingLogic = [1, 1, 1];
   public settingDOMHandler = ['checked','checked','checked'];
-
+  public indexSelected = true;
+  public progressSelected = true;
 
   id: string;
   sub: any;
