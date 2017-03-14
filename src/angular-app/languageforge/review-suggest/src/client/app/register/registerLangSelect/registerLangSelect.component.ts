@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgModel, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { User } from '../../../shared/models/user';
+import { User } from '../../shared/models/user';
 declare var Materialize:any;
 
-import { AuthService } from '../../../shared/services/auth.service';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   moduleId: module.id,

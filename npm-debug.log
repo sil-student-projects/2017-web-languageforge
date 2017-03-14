@@ -13,7 +13,7 @@
 4 verbose stack     at /usr/share/npm/node_modules/graceful-fs/graceful-fs.js:76:16
 4 verbose stack     at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:380:3)
 5 verbose cwd /home/senzor/Desktop/studioSpring2017/web-languageforge
-6 error Linux 4.4.0-64-generic
+6 error Linux 4.4.0-66-generic
 7 error argv "/usr/bin/nodejs" "/usr/bin/npm" "start"
 8 error node v4.2.6
 9 error npm  v3.5.2
