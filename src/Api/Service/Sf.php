@@ -18,6 +18,8 @@ use Api\Model\Languageforge\Lexicon\Command\SendReceiveCommands;
 use Api\Model\Languageforge\Lexicon\Dto\LexBaseViewDto;
 use Api\Model\Languageforge\Lexicon\Dto\LexDbeDto;
 use Api\Model\Languageforge\Lexicon\Dto\LexProjectDto;
+use Api\Model\Languageforge\Lexicon\LexProjectModel;
+use Api\Model\Languageforge\Lexicon\LexCommentListModel;
 use Api\Model\Languageforge\Semdomtrans\Command\SemDomTransItemCommands;
 use Api\Model\Languageforge\Semdomtrans\Command\SemDomTransProjectCommands;
 use Api\Model\Languageforge\Semdomtrans\Command\SemDomTransWorkingSetCommands;
@@ -45,6 +47,7 @@ use Api\Model\Shared\Dto\ProjectListDto;
 use Api\Model\Shared\Dto\ProjectManagementDto;
 use Api\Model\Shared\Dto\RightsHelper;
 use Api\Model\Shared\Dto\UserProfileDto;
+use Api\Model\Shared\Mapper\JsonDecoder;
 use Api\Model\Shared\Mapper\JsonEncoder;
 use Api\Model\Shared\ProjectModel;
 use Api\Model\Shared\UserListModel;
@@ -369,6 +372,18 @@ class Sf
         return ProjectCommands::getJoinRequests($this->projectId);
     }
 
+    public function project_getLanguage()
+    {
+        $p = ProjectCommands::readProject($this->projectId);
+        return $p['languageCode'];
+    }
+
+    public function project_getDefinitionLanguages()
+    {
+        $p = ProjectCommands::readProject($this->projectId);
+        return $p['config']['entry']['fields']['senses']['fields']['definition']['inputSystems'];
+    }
+
     /**
      * Clear out the session projectId and permanently delete selected list of projects.
      *
@@ -657,7 +672,7 @@ class Sf
         return LexProjectCommands::updateProject($this->projectId, $this->userId, $settings);
     }
 
-    public function lex_baseViewDto()
+    public function lex_baseView()
     {
         return LexBaseViewDto::encode($this->projectId, $this->userId);
     }
@@ -761,6 +776,23 @@ class Sf
     public function lex_comment_updateStatus($commentId, $status)
     {
         return LexCommentCommands::updateCommentStatus($this->projectId, $commentId, $status);
+    }
+
+    public function lex_comment_getByWord($wordId)
+    {
+        $project = new LexProjectModel($this->projectId);
+
+        $commentsModel = new LexCommentListModel($project, null);
+        $commentsModel->readAsModels();
+
+        $comments = array();
+
+        foreach($commentsModel->entries as $entry){
+            if($entry->entryRef->id == $wordId){
+                $comments[$entry->id->id]=$entry->content;
+            }
+        }
+        return $comments;
     }
 
     public function lex_optionlists_update($params)
@@ -959,4 +991,63 @@ class Sf
         }
         $this->app['session']->set('last_activity', $newtime);
     }
+
+    // -------------------------------- Review & Suggest Api ----------------------------------
+
+    public function rs_get_words($numWords = 64){
+
+        //$wordIDs = array('58add4731d41c829fd41d1b2', '58add4631d41c829fb3c64f3','58add42d1d41c829fc67b322','58add44e1d41c82e43601462','58addbb91d41c82e3f30a224');
+        $words = array();
+
+
+        for($i = 0; $i < $numWords; $i++){
+            $wordName = "Test Word ".$i;
+            $wordDef = "Test Def ".$i;
+            $words[$wordName] = $wordDef;
+        }
+        /*
+        foreach ($wordIDs as $wordId){
+            array_push($words,$this->rs_get_word_def($wordId));
+        }*/
+        return $words;
+    }
+
+    public function rs_get_word_def($wordID){
+
+        $word = LexEntryCommands::readEntry($this->projectId, $wordID);
+        $wordLang = $this->project_getLanguage();
+        $defLangs = $this->project_getDefinitionLanguages();
+        $defs = array();
+        foreach ($word["senses"] as $sence){
+            $langs = array();
+            foreach ($defLangs as $def){
+                $langs[$def] = $sence["definition"][$def]["value"];
+            }
+            array_push($defs,$langs);
+        }
+
+        return array($word["lexeme"][$wordLang]["value"] => $defs);
+    }
+
+    public function rs_upvote($wordID){
+        return $this->rs_vote($wordID,"This word is correct.");
+    }
+    public function rs_downvote($wordID){
+        return $this->rs_vote($wordID,"This word is not correct.");
+    }
+    private function rs_vote($wordID,$commentText){
+        $commentID = null;
+        $comments = $this->lex_comment_getByWord($wordID);
+        foreach($comments as $id => $text){
+            if($text == $commentText) $commentID = $id;
+        }
+
+        if($commentID == null){
+            $data = array("id"=>"","content"=>$commentText,"entryRef"=>$wordID);
+            return $this->lex_comment_update($data);
+        }else{
+            return $this->lex_comment_plusOne($commentID);
+        }
+    }
+
 }
