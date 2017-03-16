@@ -1,10 +1,11 @@
 <div class="container">
   <div class="card">
     <div class="card-content">
-      <span class="card-title">Account Creation</span>
-      <form materialize #registerForm="ngForm" class="col s12">
+      <span class="card-title">Language Select</span>
+      <form materialize #registerLangSelectForm="ngForm" class="col s12">
 
-        
+        <!--
+
         <div class="input-field col s12">
           <input required class="validate" id="email" type="text" name="email" [(ngModel)]="registerUser.email" #username="ngModel">
           <label for="email" data-error="Invalid Email">Email</label>
@@ -30,6 +31,27 @@
             <i class="material-icons right">send</i>
           </button>
         </div>
+
+        -->
+
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+
+        <ul id="myUL">
+
+          <li><a href="#" class="header">A</a></li>
+          <li><a href="#">Adele</a></li>
+          <li><a href="#">Agnes</a></li>
+
+          <li><a href="#" class="header">B</a></li>
+          <li><a href="#">Billy</a></li>
+          <li><a href="#">Bob</a></li>
+
+          <li><a href="#" class="header">C</a></li>
+          <li><a href="#">Calvin</a></li>
+          <li><a href="#">Christina</a></li>
+          <li><a href="#">Cindy</a></li>
+
+        </ul>
 
       </form>
     </div>

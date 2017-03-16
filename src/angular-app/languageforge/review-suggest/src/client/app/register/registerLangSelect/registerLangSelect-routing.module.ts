@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { RegisterComponent } from './registerLangSelect.component';
+import { RegisterLangSelectComponent } from './registerLangSelect.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'register', component: RegisterComponent }
+      { path: 'registerLangSelect', component: RegisterLangSelectComponent }
     ])
   ],
   exports: [RouterModule]
 })
-export class RegisterRoutingModule { }
+export class RegisterLangSelectRoutingModule { }

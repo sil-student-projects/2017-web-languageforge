@@ -10,9 +10,9 @@ import { AuthService } from '../../shared/services/auth.service';
 @Component({
   moduleId: module.id,
   selector: 'logon',
-  templateUrl: 'register.component.html',
+  templateUrl: 'registerLangSelect.component.html',
 })
-export class RegisterComponent implements OnInit {
+export class RegisterLangSelectComponent implements OnInit {
 
   private registerUser: User = new User();
   private authForm: NgModel;
