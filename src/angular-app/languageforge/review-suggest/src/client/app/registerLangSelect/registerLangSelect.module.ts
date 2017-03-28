@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { RegisterLangSelectComponent } from './registerLangSelect.component';
 import { RegisterLangSelectRoutingModule } from './registerLangSelect-routing.module';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from '../shared/services/auth.service';
 
 @NgModule({
   imports: [CommonModule, RegisterLangSelectRoutingModule, FormsModule],
