@@ -25,6 +25,37 @@ class LexEntryCommands
         return JsonEncoder::encode($entry);
     }
 
+    public static function readRandomEntrys($projectId, $numEntries)
+    {
+        $LexEntries = LexEntryCommands::listEntries($projectId);
+        $word_list = [];
+        foreach ($LexEntries->entries as $word){
+            $word_list[$word["id"]] = LexEntryCommands::getWordDefs($projectId, $word["id"]);
+        };
+
+        while (count($word_list) > $numEntries){
+            $rand_key = array_rand($word_list);
+            unset($word_list[$rand_key]);
+        };
+
+        return $word_list;
+    }
+
+    public static function getWordDefs($projectId, $entryId)
+    {
+        $word = LexEntryCommands::readEntry($projectId, $entryId);
+        $defLangs = LexProjectCommands::getDefinitionLanguages($projectId);
+        $defs = array();
+        foreach ($word["senses"] as $sence){
+            $langs = array();
+            foreach ($defLangs as $def){
+                $langs[$def] = $sence["definition"][$def]["value"];
+            }
+            array_push($defs,$langs);
+        }
+        return array(array_pop($word["lexeme"])["value"] => $defs);
+    }
+
     /*
     public static function addEntry($projectId, $params)
     {

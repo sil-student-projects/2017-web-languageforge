@@ -372,18 +372,6 @@ class Sf
         return ProjectCommands::getJoinRequests($this->projectId);
     }
 
-    public function project_getLanguage()
-    {
-        $p = ProjectCommands::readProject($this->projectId);
-        return $p['languageCode'];
-    }
-
-    public function project_getDefinitionLanguages()
-    {
-        $p = ProjectCommands::readProject($this->projectId);
-        return $p['config']['entry']['fields']['senses']['fields']['definition']['inputSystems'];
-    }
-
     /**
      * Clear out the session projectId and permanently delete selected list of projects.
      *
@@ -780,19 +768,7 @@ class Sf
 
     public function lex_comment_getByWord($wordId)
     {
-        $project = new LexProjectModel($this->projectId);
-
-        $commentsModel = new LexCommentListModel($project, null);
-        $commentsModel->readAsModels();
-
-        $comments = array();
-
-        foreach($commentsModel->entries as $entry){
-            if($entry->entryRef->id == $wordId){
-                $comments[$entry->id->id]=$entry->content;
-            }
-        }
-        return $comments;
+        return LexCommentCommands::getCommentsByWordId($this->projectId, $wordId);
     }
 
     public function lex_optionlists_update($params)
@@ -994,56 +970,15 @@ class Sf
 
     // -------------------------------- Review & Suggest Api ----------------------------------
 
-    public function rs_get_words($numWords = 64){
-        $LexEntries = LexEntryCommands::listEntries($this->projectId);
-        $word_list = [];
-        foreach ($LexEntries->entries as $word){
-            $word_list[$word["id"]] = $this->rs_get_word_def($word["id"]);
-        };
-
-        while (count($word_list) > $numWords){
-            $rand_key = array_rand($word_list);
-            unset($word_list[$rand_key]);
-        };
-
-        return $word_list;
+    public function suggest_get_words($numWords = 64){
+        return LexEntryCommands::readRandomEntrys($this->projectId, $numWords);
     }
 
-    public function rs_get_word_def($wordID){
-
-        $word = LexEntryCommands::readEntry($this->projectId, $wordID);
-        $wordLang = $this->project_getLanguage();
-        $defLangs = $this->project_getDefinitionLanguages();
-        $defs = array();
-        foreach ($word["senses"] as $sence){
-            $langs = array();
-            foreach ($defLangs as $def){
-                $langs[$def] = $sence["definition"][$def]["value"];
-            }
-            array_push($defs,$langs);
-        }
-        return array(array_pop($word["lexeme"])["value"] => $defs);
+    public function suggest_upvote($wordID){
+        return LexCommentCommands::vote($this->projectId, $wordID, $this->userId, $this->website, "This word is correct.");
     }
-
-    public function rs_upvote($wordID){
-        return $this->rs_vote($wordID,"This word is correct.");
-    }
-    public function rs_downvote($wordID){
-        return $this->rs_vote($wordID,"This word is not correct.");
-    }
-    private function rs_vote($wordID,$commentText){
-        $commentID = null;
-        $comments = $this->lex_comment_getByWord($wordID);
-        foreach($comments as $id => $text){
-            if($text == $commentText) $commentID = $id;
-        }
-
-        if($commentID == null){
-            $data = array("id"=>"","content"=>$commentText,"entryRef"=>$wordID);
-            return $this->lex_comment_update($data);
-        }else{
-            return $this->lex_comment_plusOne($commentID);
-        }
+    public function suggest_downvote($wordID){
+        return LexCommentCommands::vote($this->projectId, $wordID, $this->userId, $this->website, "This word is not correct.");
     }
 
 }

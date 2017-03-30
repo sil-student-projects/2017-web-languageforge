@@ -175,6 +175,12 @@ class LexProjectCommands
         }
     }
 
+    public static function getDefinitionLanguages($projectId)
+    {
+        $p = ProjectCommands::readProject($projectId);
+        return $p['config']['entry']['fields']['senses']['fields']['definition']['inputSystems'];
+    }
+
         /**
         * @param string $projectId
         * @throws \Exception
