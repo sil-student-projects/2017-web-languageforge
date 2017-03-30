@@ -7,11 +7,16 @@ declare var Materialize:any;
 
 import { AuthService } from '../shared/services/auth.service';
 
+//TEST
+
+//END
+
 @Component({
   moduleId: module.id,
   selector: 'logon',
   templateUrl: 'registerLangSelect.component.html',
 })
+
 export class RegisterLangSelectComponent implements OnInit {
 
   private registerUser: User = new User();

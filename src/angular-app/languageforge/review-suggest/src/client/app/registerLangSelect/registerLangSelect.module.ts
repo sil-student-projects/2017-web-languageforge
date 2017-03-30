@@ -12,4 +12,5 @@ import { AuthService } from '../shared/services/auth.service';
   exports: [RegisterLangSelectComponent],
   providers: [AuthService]
 })
+
 export class RegisterLangSelectModule { }
