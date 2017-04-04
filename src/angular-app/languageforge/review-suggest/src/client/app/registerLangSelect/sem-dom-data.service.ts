@@ -1,18 +1,3 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { RegisterLangSelectComponent } from './registerLangSelect.component';
-
-@NgModule({
-  imports: [
-    RouterModule.forChild([
-      { path: 'registerLangSelect', component: RegisterLangSelectComponent }
-    ])
-  ],
-  exports: [RouterModule]
-})
-export class RegisterLangSelectRoutingModule { }
-
-//TEST
 import { Injectable } from '@angular/core';
 
 import { SemanticDomainCollection } from './semantic-domain.model';
@@ -14367,4 +14352,3 @@ const semanticDomains: SemanticDomainCollection = {
         "value" : "9.7.3.2 Names of buildings"
     }
 };
-//END

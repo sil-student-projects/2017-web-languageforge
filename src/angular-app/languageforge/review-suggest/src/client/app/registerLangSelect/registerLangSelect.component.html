@@ -4,69 +4,17 @@
       <span class="card-title">Language Select</span>
       <form materialize #registerLangSelectForm="ngForm" class="col s12">
 
-        <!--
-
-        <div class="input-field col s12">
-          <input required class="validate" id="email" type="text" name="email" [(ngModel)]="registerUser.email" #username="ngModel">
-          <label for="email" data-error="Invalid Email">Email</label>
-        </div>
-
-        <div class="input-field col s12">
-          <input required class="validate" id="username" type="text" name="username" [(ngModel)]="registerUser.username" #username="ngModel">
-          <label for="username" data-error="Invalid Username">Username</label>
-        </div>
-
-        <div class="input-field col s12">
-          <input required class="validate" id="password" type="password" name="password" [(ngModel)]="registerUser.password" #password="ngModel">
-          <label for="password" data-error="Invalid Password">Password</label>
-        </div>
-
-         <div class="input-field col s12">
-          <input required class="validate" id="password" type="password" name="confPass" [(ngModel)]="registerUser.confPass" #password="ngModel">
-          <label for="password" data-error="Invalid Password">Confirm Password</label>
-        </div>
-
-        <div class="card-action">
-          <button [disabled]="!registerForm.form.valid" (click)="onSubmit()" class="btn orange darken-1 waves-effect waves-light" type="button">Submit
-            <i class="material-icons right">send</i>
-          </button>
-        </div>
-
-        -->
-        
-        <!--
-
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
-
-        <ul id="myUL">
-
-          <li><a href="#" class="header">A</a></li>
-          <li><a href="#">Adele</a></li>
-          <li><a href="#">Agnes</a></li>
-
-          <li><a href="#" class="header">B</a></li>
-          <li><a href="#">Billy</a></li>
-          <li><a href="#">Bob</a></li>
-
-          <li><a href="#" class="header">C</a></li>
-          <li><a href="#">Calvin</a></li>
-          <li><a href="#">Christina</a></li>
-          <li><a href="#">Cindy</a></li>
-
-        </ul>
-
-        -->
-
-        <div>
-          <h3> {{title}}</h3>
-          <input type="text" [(ngModel)]="queryString" id="search" placeholder="Search to type">
-
-          <ul>
-            <li *ngFor="let n of names | FilterPipe: queryString">
-              {{n}}
-            </li>
-        </ul>
+      <!--
+      <div>
+        <input type="text" [formControl]="searchText">
+        <select *ngIf="showResults()"
+              (change)="emitDomain($event.target.value)">
+          <option *ngFor="let result of searchResults" value="{{ result.key }}">
+              {{ result.key }}&mdash;{{ result.name}}&mdash;{{ result.description }}
+          </option>
+        </select>
       </div>
+      -->
 
       </form>
     </div>
