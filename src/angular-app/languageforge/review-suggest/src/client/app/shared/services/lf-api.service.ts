@@ -112,6 +112,12 @@ export class LfApiService {
         })
     }
 
+    user_create(email:string, username: string, password: string) {
+        return this.callApi('user_create', [email, username, password]).map(result =>{
+            return result;
+        })
+    }
+
     user_authenticate(username: string, password: string) {
         let body = '_username='+username+'&_password='+password+'&_remember_me=on&_json_request=on';
         return this.sendRequest(this.loginUrl, body)

@@ -8,12 +8,18 @@
         <li *ngIf="isLoggedIn()" routerLinkActive="active"><a routerLink="/dashboard">Dashboard</a></li>
         <li *ngIf="isLoggedIn() && isProjectSelected()" routerLinkActive="active"><a [routerLink]="['/review', getProjectId()]">Review</a></li>
         <li *ngIf="isLoggedIn()"><a (click)="logout()">Logout</a></li>
+
+        <li *ngIf="!isLoggedIn()" routerLinkActive="active"><a routerLink="/register">Create Account</a></li>
+
       </ul>
       <ul id="nav-mobile" class="side-nav">
         <li *ngIf="!isLoggedIn()" routerLinkActive="active"><a routerLink="/auth">Log In</a></li>
         <li *ngIf="isLoggedIn()" routerLinkActive="active"><a routerLink="/dashboard">Dashboard</a></li>
         <li *ngIf="isLoggedIn() && isProjectSelected()" routerLinkActive="active"><a [routerLink]="['/review', getProjectId()]">Review</a></li>
         <li *ngIf="isLoggedIn()"><a (click)="logout()">Logout</a></li>
+
+        <li *ngIf="!isLoggedIn()" routerLinkActive="active"><a routerLink="/register">Create Account</a></li>
+
       </ul>
     </div>
   </nav>

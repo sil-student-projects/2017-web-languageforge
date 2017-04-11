@@ -11,6 +11,8 @@ import { AuthModule } from './auth/auth.module';
 import { ReviewModule } from './review/review.module'
 import { SharedModule } from './shared/shared.module';
 import { MaterializeModule } from './shared/materialize.module';
+import { RegisterModule } from './register/register.module';
+import { RegisterLangSelectModule } from './registerLangSelect/registerLangSelect.module'; //test
 
 import { LfApiService } from './shared/services/lf-api.service';
 import { ProjectService } from './shared/services/project.service';
@@ -28,7 +30,9 @@ import { LoggedInGuard } from './shared/logged-in.guard';
   AuthModule,  
   SharedModule.forRoot(), 
   MaterializeModule, 
-  ReviewModule],
+  ReviewModule, 
+  RegisterModule,
+  RegisterLangSelectModule],
   declarations: [AppComponent],
   providers: [{
     provide: APP_BASE_HREF,

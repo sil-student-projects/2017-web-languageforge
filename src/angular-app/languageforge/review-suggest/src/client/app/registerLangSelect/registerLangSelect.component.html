@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">Language Select</span>
+      <form materialize #registerLangSelectForm="ngForm" class="col s12">
+
+      <!-- START -->
+      <div>
+        <input type="text" [formControl]="searchText">
+        <select *ngIf="showResults()"
+              (change)="emitDomain($event.target.value)">
+          <option *ngFor="let result of searchResults" value="{{ result.key }}">
+              {{ result.key }}&mdash;{{ result.name}}&mdash;{{ result.description }}
+          </option>
+        </select>
+      </div>
+      <!-- END -->
+
+      </form>
+    </div>
+  </div>
+</div>
