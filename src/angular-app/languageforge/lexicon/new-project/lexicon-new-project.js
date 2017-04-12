@@ -34,54 +34,53 @@ angular.module('lexicon-new-project',
         // Need quotes around Javascript keywords like 'abstract' so YUI compressor won't complain
         'abstract': true, // jscs:ignore
         templateUrl:
-          '/angular-app/languageforge/lexicon/new-project/views/' + bootstrapVersion + '/new-project-abstract.html',
+          '/angular-app/languageforge/lexicon/new-project/views/new-project-abstract.html',
         controller: 'NewLexProjectCtrl'
       })
       .state('newProject.chooser', {
         url: '/chooser',
         templateUrl:
-          '/angular-app/languageforge/lexicon/new-project/views/' + bootstrapVersion + '/new-project-chooser.html',
+          '/angular-app/languageforge/lexicon/new-project/views/new-project-chooser.html',
         data: {
           step: 0
         }
       })
       .state('newProject.name', {
-        templateUrl: '/angular-app/languageforge/lexicon/new-project/views/' + bootstrapVersion + '/new-project-name.html',
+        templateUrl: '/angular-app/languageforge/lexicon/new-project/views/new-project-name.html',
         data: {
           step: 1
         }
       })
       .state('newProject.sendReceiveCredentials', {
         templateUrl:
-          '/angular-app/languageforge/lexicon/new-project/views/' + bootstrapVersion + '/new-project-sr-credentials.html',
+          '/angular-app/languageforge/lexicon/new-project/views/new-project-sr-credentials.html',
         data: {
           step: 1 // This is not a typo. There are two possible step 2 templates.
         }
       })
       .state('newProject.initialData', {
         templateUrl:
-          '/angular-app/languageforge/lexicon/new-project/views/' + bootstrapVersion + '/new-project-initial-data.html',
+          '/angular-app/languageforge/lexicon/new-project/views/new-project-initial-data.html',
         data: {
           step: 2
         }
       })
       .state('newProject.sendReceiveClone', {
         templateUrl:
-          '/angular-app/languageforge/lexicon/new-project/views/' + bootstrapVersion + '/new-project-sr-clone.html',
+          '/angular-app/languageforge/lexicon/new-project/views/new-project-sr-clone.html',
         data: {
           step: 2 // This is not a typo. There are two possible step 2 templates.
         }
       })
       .state('newProject.verifyData', {
         templateUrl:
-          '/angular-app/languageforge/lexicon/new-project/views/' + bootstrapVersion + '/new-project-verify-data.html',
+          '/angular-app/languageforge/lexicon/new-project/views/new-project-verify-data.html',
         data: {
           step: 3
         }
       })
       .state('newProject.selectPrimaryLanguage', {
-        templateUrl: '/angular-app/languageforge/lexicon/new-project/views/' + bootstrapVersion +
-          '/new-project-select-primary-language.html',
+        templateUrl: '/angular-app/languageforge/lexicon/new-project/views/new-project-select-primary-language.html',
         data: {
           step: 3 // This is not a typo. There are two possible step 3 templates.
         }
@@ -95,7 +94,7 @@ angular.module('lexicon-new-project',
       }]);
 
   }])
-  .controller('NewLexProjectCtrl', ['$scope', '$q', '$filter', '$modal', '$window',
+  .controller('NewLexProjectCtrl', ['$scope', '$q', '$filter', '$uibModal', '$window',
     'sessionService', 'silNoticeService', 'projectService', 'sfchecksLinkService', '$translate',
     '$state', 'Upload', 'lexProjectService', 'lexSendReceiveApi',  'lexSendReceive',
   function ($scope, $q, $filter, $modal, $window,
@@ -259,7 +258,6 @@ angular.module('lexicon-new-project',
         }
       });
     };
-
 
     // Form validation requires API calls, so it return a promise rather than a value.
     function validateForm() {
@@ -467,8 +465,7 @@ angular.module('lexicon-new-project',
       $scope.projectCodeStateDefer = $q.defer();
       $scope.projectCodeStateDefer.resolve('unchecked');
       $scope.project.sendReceive.isUnchecked = true;
-      $scope.project.sendReceive.usernameStatus = 'unchecked';
-      $scope.project.sendReceive.passwordStatus = 'unchecked';
+      $scope.project.sendReceive.credentialsStatus = 'unchecked';
     }
 
     $scope.resetValidateProjectForm = resetValidateProjectForm;
@@ -615,12 +612,8 @@ angular.module('lexicon-new-project',
         return neutral();
       }
 
-      if ($scope.project.sendReceive.usernameStatus == 'unknown') {
-        return error('The Login dosen\'t exist on LanguageDepot.org. Enter a Login.');
-      }
-
-      if ($scope.project.sendReceive.passwordStatus == 'invalid') {
-        return error('The Password isn\'t valid on LanguageDepot.org. Enter the Password.');
+      if ($scope.project.sendReceive.credentialsStatus == 'invalid') {
+        return error('The username or password isn\'t valid on LanguageDepot.org.');
       }
 
       $scope.project.sendReceive.projectStatus = 'no_access';
@@ -630,7 +623,7 @@ angular.module('lexicon-new-project',
 
       if (!$scope.project.sendReceive.project.isLinked &&
           $scope.project.sendReceive.project.role != 'manager') {
-        return error('Please select a Project that you are the Manager on LanguageDepot.org.');
+        return error('Please select a Project that you are the Manager of on LanguageDepot.org.');
       }
 
       $scope.project.sendReceive.projectStatus = 'ok';
@@ -672,7 +665,7 @@ angular.module('lexicon-new-project',
     $scope.openNewLanguageModal = function openNewLanguageModal() {
       var modalInstance = $modal.open({
         templateUrl: '/angular-app/languageforge/lexicon/views/select-new-language.html',
-        controller: ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+        controller: ['$scope', '$uibModalInstance', function ($scope, $modalInstance) {
           $scope.selected = {
             code: '',
             language: {}
@@ -680,7 +673,8 @@ angular.module('lexicon-new-project',
           $scope.add = function () {
             $modalInstance.close($scope.selected);
           };
-        }]
+        }],
+        windowTopClass: 'modal-select-language'
       });
       modalInstance.result.then(function (selected) {
         $scope.newProject.languageCode = selected.code;

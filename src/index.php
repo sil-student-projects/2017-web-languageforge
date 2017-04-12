@@ -130,7 +130,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
         __DIR__.'/Site/views/'.$WEBSITE->base.'/container',
         __DIR__.'/Site/views/'.$WEBSITE->base,
         __DIR__.'/Site/views/shared/page',
-        __DIR__.'/Site/views/shared',
+        __DIR__.'/Site/views/shared/container',
 
         // errors
         __DIR__.'/Site/views/'.$WEBSITE->base.'/error',
@@ -217,7 +217,7 @@ $app->get('/app/{appName}',     'Site\Controller\App::view')->value('appName', '
 $app->get('/script/{folder}/{scriptName}/{runType}', 'Site\Controller\Script::run');
 $app->get('/script/{folder}/{scriptName}/', 'Site\Controller\Script::run');
 $app->get('/script/{folder}/{scriptName}',  'Site\Controller\Script::run');
-$app->get('/script/',  'Site\Controller\Script::run');
+$app->get('/script/', 'Site\Controller\Script::run');
 $app->get('/script',  'Site\Controller\Script::run');
 
 //public
@@ -235,7 +235,7 @@ $app->post('/auth/forgot_password', 'Site\Controller\Auth::forgotPassword')->bin
 
 $app->get('/download/assets/{appName}/{projectSlug}/audio/{filename}', 'Site\Controller\Download::assets');
 $app->get('/download/assets/{appName}/{projectSlug}/{filename}', 'Site\Controller\Download::assets');
-$app->get('/{pageName}/',        'Site\Controller\Page::view')->value('pageName', 'home');
+$app->get('/{pageName}/',       'Site\Controller\Page::view')->value('pageName', 'home');
 $app->get('/{pageName}',        'Site\Controller\Page::view')->value('pageName', 'home');
 
 /*--------------------------------------------------------------------

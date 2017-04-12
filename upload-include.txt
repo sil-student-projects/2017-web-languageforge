@@ -2,4 +2,6 @@
 /assets/index.html
 
 # patterns to include
-/angular-app/**/*.min.js
+/angular-app/languageforge/lexicon/js/vendor/**
+/angular-app/**/assets/*.js
+/angular-app/**/**min.js

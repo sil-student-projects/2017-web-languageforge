@@ -283,9 +283,6 @@ legend.override-bootstrap {
   }
 }
 
-
-
-
 .lexiconListItemCompact {
     position: relative;
     overflow-y: hidden;
@@ -312,9 +309,14 @@ legend.override-bootstrap {
     min-height: 580px;
 }
 
-.entryItemView i.icon-remove {
-    cursor: pointer;
-    color: #CCC;
+.entryItemView {
+    i.fa-times {
+        cursor: pointer;
+        color: #888;
+    }
+    button i.fa-times {
+        color: inherit;
+    }
 }
 
 #lexAppCommentView .entryItemView {

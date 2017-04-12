@@ -79,8 +79,10 @@ class Auth extends App
     private function setupAuthView(Request $request, Application $app)
     {
         $this->data['last_username'] = $app['session']->get(Security::LAST_USERNAME);
-        if ($app['security.last_error']($request)) {
-            $app['session']->getFlashBag()->add('errorMessage', $app['security.last_error']($request));
+        $errorMsg = $app['security.last_error']($request);
+        if($errorMsg == 'Bad credentials.') $errorMsg = 'Invalid username or password.';
+        if ($errorMsg) {
+            $app['session']->getFlashBag()->add('errorMessage', $errorMsg);
             if ($app['session']->has(SecurityContextInterface::AUTHENTICATION_ERROR)) {
                 $app['session']->remove(SecurityContextInterface::AUTHENTICATION_ERROR);
             }

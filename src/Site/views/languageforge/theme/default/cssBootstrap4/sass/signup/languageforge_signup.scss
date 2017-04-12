@@ -1,4 +1,9 @@
 @import '../base/_variables.scss';
+
+#form-container h1 {
+  font-size: 20pt;
+}
+
 /* progress indicator */
 #progress-indicator {
   padding: 0 0 30px 0;
@@ -20,7 +25,7 @@
       font-size: 50px;
       height: 56px;
     }
-    
+
     i.fa-check-square-o {
       color: green;
       font-size: 50px;
@@ -33,11 +38,4 @@
   a:hover {
     text-decoration: none;
   }
-}
-
-.fa-check{
-    color: green;
-}
-.fa-times{
-    color: red;
 }

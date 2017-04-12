@@ -4,12 +4,12 @@ module.exports = new ProjectsPage();
 
 function ProjectsPage() {
   var util = require('./util');
+  var expectedCondition = protractor.ExpectedConditions;
+  var CONDITION_TIMEOUT = 3000;
   var projectTypes = {
     sf: 'Community Scripture Checking', // ScriptureForge
     lf: 'Web Dictionary' // LanguageForge
   };
-  var expectedCondition = protractor.ExpectedConditions;
-  var CONDITION_TIMEOUT = 3000;
 
   this.url = '/app/projects';
   this.get = function get() {
@@ -24,7 +24,7 @@ function ProjectsPage() {
   this.saveBtn = element(by.partialButtonText('Save'));
 
   this.settings = {};
-  this.settings.button = element(by.css('a.btn i.icon-cog'));
+  this.settings.button = element(by.className('fa fa-cog'));
   if (browser.baseUrl.includes('scriptureforge')) {
     this.settings.userManagementLink = element(by.linkText('Project Settings'));
   } else if (browser.baseUrl.includes('languageforge')) {
@@ -91,14 +91,17 @@ function ProjectsPage() {
     this.findProject(projectName).then(function (projectRow) {
       var projectLink = projectRow.element(by.css('a'));
       projectLink.click();
-
+      browser.wait(expectedCondition.visibilityOf(this.settings.button), CONDITION_TIMEOUT);
       this.settings.button.click();
+      browser.wait(expectedCondition.visibilityOf(this.settings.userManagementLink),
+        CONDITION_TIMEOUT);
       this.settings.userManagementLink.click();
 
-      var addMembersBtn = element(by.partialButtonText('Add Members'));
+      var addMembersBtn = element(by.id('addMembersButton'));
+      browser.wait(expectedCondition.visibilityOf(addMembersBtn), CONDITION_TIMEOUT);
       addMembersBtn.click();
       var newMembersDiv = element(by.css('#newMembersDiv'));
-      var userNameInput = newMembersDiv.element(by.css('input[type="text"]'));
+      var userNameInput = newMembersDiv.element(by.id('typeaheadInput'));
       browser.wait(expectedCondition.visibilityOf(userNameInput), CONDITION_TIMEOUT);
       userNameInput.sendKeys(usersName);
 
@@ -109,7 +112,7 @@ function ProjectsPage() {
       });
 
       // This should be unique no matter what
-      var addToProjectBtn = newMembersDiv.element(by.css('button'));
+      var addToProjectBtn = newMembersDiv.element(by.id('addUserButton'));
       expect(addToProjectBtn.getText()).toContain('Add Existing User');
       addToProjectBtn.click();
 

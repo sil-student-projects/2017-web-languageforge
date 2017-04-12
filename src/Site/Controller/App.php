@@ -4,15 +4,17 @@ namespace Site\Controller;
 
 use Api\Library\Shared\SilexSessionHelper;
 use Api\Library\Shared\Website;
-use Api\Model\Shared\Command\SessionCommands;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 class App extends Base
 {
-    public function view(Request $request, Application $app, $appName, $projectId = '') {
+    public function view(
+        /** @noinspection PhpUnusedParameterInspection */
+        Request $request, Application $app, $appName, $projectId = ''
+    ) {
         $this->setupBaseVariables($app);
-        $retVal = $this->setupAngularAppVariables($app, $appName, $projectId);
+        $this->setupAngularAppVariables($app, $appName, $projectId);
         return $this->renderPage($app, 'angular-app');
     }
 
@@ -39,6 +41,7 @@ class App extends Base
             $projectId = '';
         }
 
+        $this->_appName = $appName;
         $this->data['isAngular2'] = $appModel->isAppAngular2();
         $this->data['isBootstrap4'] = $appModel->isBootstrap4;
         $this->data['appName'] = $appName;
@@ -63,19 +66,13 @@ class App extends Base
             iterator_count(new \FilesystemIterator($helpsFolder, \FilesystemIterator::SKIP_DOTS)) > 0
         ) {
             $this->_showHelp = true;
-            // there is an implicit dependency on bellows JS here using the jsonRpc module
-            $this->addJavascriptFiles(NG_BASE_FOLDER . 'container/js', array('vendor/', 'assets/'));
         }
 
-        // Other session data
-        $this->data['jsonSession'] = json_encode(SessionCommands::getSessionData($this->_projectId, $this->_userId, $this->website, $appName), JSON_UNESCAPED_SLASHES);
+        $this->addJavascriptFiles($appModel->siteFolder . '/js', array('vendor', 'assets'));
 
-
-        if (!$this->data['isAngular2']) {
-            $this->addJavascriptFiles($appModel->bellowsFolder . '/_js_module_definitions');
-            $this->addJavascriptFiles($appModel->bellowsFolder . '/js', array('vendor', 'assets'));
-            $this->addJavascriptFiles($appModel->bellowsFolder . '/directive');
-            $this->addJavascriptFiles($appModel->siteFolder . '/js', array('vendor', 'assets'));
+        if ($this->data['isAngular2']) {
+            $this->addJavascriptFiles($appModel->appFolder . '/dist');
+        } else {
             $this->addJavascriptFiles($appModel->appFolder, array('js/vendor', 'js/assets'));
         }
 
@@ -266,22 +263,24 @@ class AppModel {
         // replace "appName" with the name of the angular app that has been migrated to bootstrap 4
         // Note that this will affect both the angular app and the app frame
 
-        $sharedAppsInBoostrap4 = array("sharedApp1", "sharedApp2");
+        $sharedAppsInBoostrap4 = array(
+            "activity",
+            "changepassword",
+            "forgot_password",
+            "login",
+            "projects",
+            "reset_password",
+            "signup",
+            "siteadmin",
+            "usermanagement",
+            "userprofile"
+        );
 
         $siteAppsInBootstrap4 = array(
             "scriptureforge" => array("appName"),
             "languageforge" => array(
-                "login",
                 "rapid-words",
-                "userprofile",
-                "changepassword",
-                "forgot_password",
-                "activity",
-                "projects",
-                "signup",
-                "lexicon",
-                "siteadmin",
-                "usermanagement"
+                "lexicon"
             ),
             "m.languageforge" => array("review-suggest"),
             "waaqwiinaagiwritings" => array(),
@@ -290,7 +289,7 @@ class AppModel {
             "rapid-words" => array(),
         );
 
-        $siteLookup = preg_replace('/^(dev\.)?(\S+)\.(org|local|com)$/', '$2', $website->domain);
+        $siteLookup = preg_replace('/^(dev|e2etest|qa)?(\.)?(\S+)\.(org|local|com)$/', '$3', $website->domain);
 
         if (in_array($appName, $sharedAppsInBoostrap4)) {
             return true;
@@ -310,7 +309,6 @@ class AppModel {
         return (
             $appName != '' &&
             file_exists($appFolder) &&
-            file_exists("$appFolder/$parentAppName-$appName.html") &&
             file_exists("$appFolder/views")
         );
     }
