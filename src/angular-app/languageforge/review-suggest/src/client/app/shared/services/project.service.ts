@@ -56,8 +56,14 @@ export class ProjectService {
     return !!this.projectId;
   }
 
-  getProjectList() {
-    return this.lfApiService.project_list().map(response => {
+  joinProject(projectId: string) {
+    return this.lfApiService.project_joinProject(projectId, "contributer").map(response => {
+      return response.data;
+    });
+  }
+
+  getJoinedProjectList() {
+    return this.lfApiService.project_list_dto().map(response => {
       if (response.success) {
         this.data.set('current_project_list', response.data);
         this.projectList = response.data;
@@ -68,6 +74,15 @@ export class ProjectService {
         }
       }
       return response;
+    });
+  }
+
+  getAllProjectList() {
+    return this.lfApiService.project_list().map(response => {
+      if (response.success) {
+        this.data.set('all_project_list', response.data.entries);
+      }
+      return response.data;
     });
   }
 
@@ -120,6 +135,7 @@ export class ProjectService {
     localStorage.removeItem('current_project_list');
     localStorage.removeItem('current_project_words');
     localStorage.removeItem('current_project_settings');
+    localStorage.removeItem('all_project_list');
     this.projectId = null;
   }
 }

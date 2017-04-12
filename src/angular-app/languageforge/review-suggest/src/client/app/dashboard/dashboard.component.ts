@@ -14,23 +14,29 @@ declare var Materialize: any;
 
 export class DashboardComponent {
 
-  private projects: any[];
+  joinedProjects: any[];
+  allProjects: any[];
+  showProjects: boolean = false;
+  filterText: string = '';
 
   constructor(private projectService: ProjectService,
               private router: Router) { }
 
-  ngOnInit() {
-    this.getProjects();
+  ngOnInit(): void {
+    this.getJoinedProjects();
   }
 
-  getProjects() {
-    this.projectService.getProjectList().subscribe(response => {
-      if (response.success) {
-        this.projects = response.data.entries;
-      } else {
-        let toastContentFailed = '<b>Failed to get project list! ' + response.message + '</b>';
-        Materialize.toast(toastContentFailed, 1000, 'red');
-      }
+  getJoinedProjects() {
+    this.projectService.getJoinedProjectList().subscribe(projects => {
+      this.joinedProjects = projects.data.entries;
+    }, error => {
+      this.handleError(error);
+    });
+  }
+
+  getAllProjects() {
+    this.projectService.getAllProjectList().subscribe(projects => {
+      this.allProjects = projects.entries;
     }, error => {
       this.handleError(error);
     });
@@ -39,6 +45,37 @@ export class DashboardComponent {
   onSelect(project: any) {
     this.projectService.setProjectId(project.id);
     this.router.navigate(['/review', project.id]);
+  }
+
+  joinProject(project: any) {
+    if (this.isProjectJoined(project)) {
+      Materialize.toast("<b>You have already joined this project!</b>", 2000, 'red');
+    } else {
+      this.projectService.joinProject(project.id).subscribe(response => {
+        if (response.success) {
+          this.joinedProjects.push(project);
+          Materialize.toast("<b>Project joined!</b>", 2000, 'green');
+        } else {
+          Materialize.toast("<b>Error while joining project.</b>", 2000, 'red');
+        }
+      })
+    }
+  }
+
+  private isProjectJoined(project: any) {
+    for (let i = 0; i < this.joinedProjects.length; i++) {
+      if (this.joinedProjects[i].id == project.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  showAllProjects(showProjects: boolean) {
+    if (showProjects) {
+      this.getAllProjects();
+    }
+    this.showProjects = showProjects;
   }
 
   handleError(error: any) {
