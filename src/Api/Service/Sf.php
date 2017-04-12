@@ -18,6 +18,8 @@ use Api\Model\Languageforge\Lexicon\Command\SendReceiveCommands;
 use Api\Model\Languageforge\Lexicon\Dto\LexBaseViewDto;
 use Api\Model\Languageforge\Lexicon\Dto\LexDbeDto;
 use Api\Model\Languageforge\Lexicon\Dto\LexProjectDto;
+use Api\Model\Languageforge\Lexicon\LexProjectModel;
+use Api\Model\Languageforge\Lexicon\LexCommentListModel;
 use Api\Model\Languageforge\Semdomtrans\Command\SemDomTransItemCommands;
 use Api\Model\Languageforge\Semdomtrans\Command\SemDomTransProjectCommands;
 use Api\Model\Languageforge\Semdomtrans\Command\SemDomTransWorkingSetCommands;
@@ -45,6 +47,7 @@ use Api\Model\Shared\Dto\ProjectListDto;
 use Api\Model\Shared\Dto\ProjectManagementDto;
 use Api\Model\Shared\Dto\RightsHelper;
 use Api\Model\Shared\Dto\UserProfileDto;
+use Api\Model\Shared\Mapper\JsonDecoder;
 use Api\Model\Shared\Mapper\JsonEncoder;
 use Api\Model\Shared\ProjectModel;
 use Api\Model\Shared\UserListModel;
@@ -640,7 +643,7 @@ class Sf
         return LexProjectCommands::updateProject($this->projectId, $this->userId, $settings);
     }
 
-    public function lex_baseViewDto()
+    public function lex_baseView()
     {
         return LexBaseViewDto::encode($this->projectId, $this->userId);
     }
@@ -744,6 +747,11 @@ class Sf
     public function lex_comment_updateStatus($commentId, $status)
     {
         return LexCommentCommands::updateCommentStatus($this->projectId, $commentId, $status);
+    }
+
+    public function lex_comment_getByWord($wordId)
+    {
+        return LexCommentCommands::getCommentsByWordId($this->projectId, $wordId);
     }
 
     public function lex_optionlists_update($params)
@@ -942,4 +950,18 @@ class Sf
         }
         $this->app['session']->set('last_activity', $newtime);
     }
+
+    // -------------------------------- Review & Suggest Api ----------------------------------
+
+    public function suggest_get_words($numWords = 64){
+        return LexEntryCommands::readRandomEntrys($this->projectId, $numWords);
+    }
+
+    public function suggest_upvote($wordID){
+        return LexCommentCommands::vote($this->projectId, $wordID, $this->userId, $this->website, "This word is correct.");
+    }
+    public function suggest_downvote($wordID){
+        return LexCommentCommands::vote($this->projectId, $wordID, $this->userId, $this->website, "This word is not correct.");
+    }
+
 }

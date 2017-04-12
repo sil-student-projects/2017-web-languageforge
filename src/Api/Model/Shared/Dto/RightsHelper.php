@@ -290,7 +290,8 @@ class RightsHelper
             case 'lex_dbeDtoUpdatesOnly':
                 return $this->userHasProjectRight(Domain::ENTRIES + Operation::VIEW);
 
-            // case 'lex_entry_read':
+            case 'lex_entry_read':
+                return $this->userHasProjectRight(Domain::ENTRIES + Operation::VIEW);
             case 'lex_entry_update':
                 return $this->userHasProjectRight(Domain::ENTRIES + Operation::EDIT);
 
@@ -309,6 +310,7 @@ class RightsHelper
                 return $this->userHasProjectRight(Domain::COMMENTS + Operation::EDIT);
 
             case 'lex_comment_plusOne':
+            case 'lex_comment_getByWord':
                 return $this->userHasProjectRight(Domain::COMMENTS + Operation::VIEW);
 
             case 'lex_optionlist_update':
@@ -343,7 +345,16 @@ class RightsHelper
             // xforge frame
             case 'xforge_frame_can_show_page_help_button':
                 return true;
-            
+
+            // review & suggest
+            case 'suggest_get_words':
+            case 'suggest_get_word_def':
+                return $this->userHasProjectRight(Domain::PROJECTS + Operation::VIEW );
+            case 'suggest_upvote':
+            case 'suggest_downvote':
+            return $this->userHasProjectRight(Domain::PROJECTS + Operation::EDIT );
+
+
             default:
                 throw new \Exception("API method '$methodName' has no security policy defined in RightsHelper::userCanAccessMethod()");
         }

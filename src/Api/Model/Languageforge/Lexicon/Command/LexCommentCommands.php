@@ -7,12 +7,14 @@ use Palaso\Utilities\CodeGuard;
 use Api\Model\Languageforge\Lexicon\LexCommentModel;
 use Api\Model\Languageforge\Lexicon\LexCommentReply;
 use Api\Model\Languageforge\Lexicon\LexProjectModel;
+use Api\Model\Languageforge\Lexicon\LexCommentListModel;
 use Api\Model\Shared\Command\ProjectCommands;
 use Api\Model\Shared\Dto\RightsHelper;
 use Api\Model\Shared\Mapper\JsonDecoder;
 use Api\Model\Shared\Rights\Domain;
 use Api\Model\Shared\Rights\Operation;
 use Api\Model\Shared\UserGenericVoteModel;
+
 
 class LexCommentCommands
 {
@@ -102,6 +104,25 @@ class LexCommentCommands
         return $id;
     }
 
+    public static function getCommentsByWordId($projectId, $wordId)
+    {
+        $project = new LexProjectModel($projectId);
+        ProjectCommands::checkIfArchivedAndThrow($project);
+
+        $commentsModel = new LexCommentListModel($project, null);
+        $commentsModel->readAsModels();
+
+        $comments = array();
+
+        foreach($commentsModel->entries as $entry){
+            if($entry->entryRef->id == $wordId){
+                $comments[$entry->id->id]=$entry->content;
+            }
+        }
+        return $comments;
+
+    }
+
     public static function updateCommentStatus($projectId, $commentId, $status)
     {
         if (in_array($status, array(LexCommentModel::STATUS_OPEN, LexCommentModel::STATUS_RESOLVED, LexCommentModel::STATUS_TODO))) {
@@ -113,6 +134,22 @@ class LexCommentCommands
             return $comment->write();
         } else {
             throw new \Exception("unknown status type: $status");
+        }
+    }
+
+    public static function vote($projectId, $wordID, $userId, $website,$commentText)
+    {
+        $commentID = null;
+        $comments =  LexCommentCommands::getCommentsByWordId($projectId,$wordID);
+        foreach($comments as $id => $text){
+            if($text == $commentText) $commentID = $id;
+        }
+
+        if($commentID == null){
+            $data = array("id"=>"","content"=>$commentText,"entryRef"=>$wordID);
+            return LexCommentCommands::updateComment($projectId, $userId, $website, $data);
+        }else{
+            return LexCommentCommands::plusOneComment($projectId, $userId,$commentID);
         }
     }
 
