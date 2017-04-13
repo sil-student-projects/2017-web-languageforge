@@ -15,6 +15,7 @@ apache_site_enable:
   - scriptureforge_org_dev.conf
   - languageforge_org_e2etest.conf
   - scriptureforge_org_e2etest.conf
+  - languageforge_org_student.conf
 
 apache_vhosts:
   - server_name: dev.languageforge.org
@@ -81,3 +82,17 @@ apache_vhosts:
           - e2etest.scriptureforge.org
         certificate_file: "scriptureforge_org_e2etest.pem"
         key_file: "scriptureforge_org_e2etest.key"
+  - server_name: student.languageforge.org
+    server_admin: webmaster@palaso.org
+    server_file_name: languageforge_org_student
+    document_root: /var/www/languageforge.org_student/htdocs
+    template: vhost_ssl.conf.j2
+    virtual_hosts:
+      - has_ssl: false
+        port: 80
+        server_alias: []
+      - has_ssl: true
+        port: 443
+        server_alias: []
+        certificate_file: "languageforge_org_student.pem"
+        key_file: "languageforge_org_student.key"

@@ -159,6 +159,14 @@ class WebsiteInstances
         $w->ssl = true;
         $sites['languageforge.org'] = $w;
 
+        // student.languageforge.org
+        $w = new Website('student.languageforge.org', Website::LANGUAGEFORGE);
+        $w->name = 'Language Forge';
+        $w->ssl = true;
+        $w->userDefaultSiteRole = Website::SITEROLE_PROJECT_CREATOR;
+        $sites['student.languageforge.org'] = $w;
+
+        // m.languageforge.org
         $w = new Website('m.languageforge.org', Website::LANGUAGEFORGE);
         $w->name = 'Language Forge Mobile';
         $w->userDefaultSiteRole = Website::SITEROLE_PROJECT_CREATOR;

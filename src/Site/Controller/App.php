@@ -289,7 +289,7 @@ class AppModel {
             "rapid-words" => array(),
         );
 
-        $siteLookup = preg_replace('/^(dev|e2etest|qa)?(\.)?(\S+)\.(org|local|com)$/', '$3', $website->domain);
+        $siteLookup = preg_replace('/^(dev|e2etest|qa|student)?(\.)?(\S+)\.(org|local|com)$/', '$3', $website->domain);
 
         if (in_array($appName, $sharedAppsInBoostrap4)) {
             return true;

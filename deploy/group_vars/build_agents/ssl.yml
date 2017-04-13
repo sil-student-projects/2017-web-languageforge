@@ -51,3 +51,16 @@ ssl_items:
           - key: DNS.1
             value: "e2etest.scriptureforge.local"
     sign:
+  - name: languageforge_org_student
+    state: selfsign
+    request:
+        country_code: "TH"
+        state: "Chiang Mai"
+        locality: "Chiang Mai"
+        organization: "SIL"
+        organization_unit: ""
+        common_name: "student.languageforge.org"
+        alt_names:
+          - key: DNS.1
+            value: "student.languageforge.org"
+    sign:
